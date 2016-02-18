@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Certificate verification{% endblock %}
+{% block body_block %}
+	<h2>Serial number: {{ serial }}</h2></br>
+	{% if missing %}
+		<p>The code in the URL is either invalid or does not exist in our database.</p>
+	{% else %}
+		<p>The code in the URL is valid. The certificate was generated for <b>{{ message.participant }}</b> at <b>{{ message.timestamp }}</b>.</p>
+	{% endif %}
+{% endblock %}

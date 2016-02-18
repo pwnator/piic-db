@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Statistics{% endblock %}
+{% block script_block %}
+	<script src="{% static "js/d3.v3.min.js" %}"></script>
+	<script src="{% static "js/c3.min.js" %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static "css/c3.css" %}">
+	<style type="text/css">
+		div.overflow {
+			overflow-y: scroll;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		var chart1, chart2, chart7;
+		var monthtext = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		var topic, graddate;
+		$(document).ready(function(){
+			chart1 = c3.generate({
+				bindto: '#chart1',
+				data: {
+					columns: [],
+					type: 'donut',
+				},
+				donut: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
+			chart2 = c3.generate({
+				bindto: '#chart2',
+				data: {
+					columns: [],
+					type: 'donut',
+				},
+				donut: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
+			{% if user.is_authenticated %}
+			chart7 = c3.generate({
+				bindto: '#chart7',
+				data: {
+					columns: [],
+					type: 'pie',
+					onclick: function(d,i) {
+						select_chart8(d.name);
+					},
+				},
+				pie: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
+			{% endif %}
+			$("#select_chart1").change(function(){
+				chart1.unload();
+				$('.c3-chart-arcs-title', $(chart1.element)).text('');
+				yid1 = $(this).find("option:selected").val();
+				$.ajax({
+					url: 'chart1/'+yid1+'/',
+					data: yid1,
+					success: function(data){
+						var sum = 0;
+						setTimeout(function (){
+							$.each(data, function(key, value){
+								sum = sum + value;
+								chart1.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart1.element)).text(sum+' trainings delivered');
+							});
+						}, 300);
+					}
+				});
+			});
+			$("#select_chart2").change(function(){
+				chart2.unload();
+				$('.c3-chart-arcs-title', $(chart2.element)).text('');
+				yid2 = $(this).find("option:selected").val();
+				$.ajax({
+					url: 'chart2/'+yid2+'/',
+					data: yid2,
+					success: function(data){
+						var sum = 0;
+						setTimeout(function (){
+							$.each(data, function(key, value){
+								sum = sum + value;
+								chart2.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart2.element)).text(sum+' students trained');
+							});
+						}, 300);
+					}
+				});
+			});
+			$("#select_chart3").change(function(){
+				iid1 = $(this).find("option:selected").val();
+				$.ajax({
+					url: 'chart3/'+iid1+'/',
+					data: iid1,
+					success: function(data){
+						var table = document.getElementById('chart3');
+						$("#chart3").empty();
+						$("#chart3").html("<th>Module</th><th>Date</th>");
+						var index = 0;
+						data.forEach(function(obj) {
+							var row = document.createElement('tr');
+							if (index%2) row.className = 'alt';
+							row.innerHTML = '<td>' + obj.topic + ' v' + obj.version + '</td><td><a href="master/training/'+ obj.training_id +'">' + parseInt(obj.date/10000) + '/' + parseInt((obj.date%10000)/100) + '/' + obj.date%100 + '</a></td>';
+							table.appendChild(row);
+							index++;
+						});
+					}
+				});
+			});
+			{% if user.is_authenticated %}
+			$("#select_chart5").change(function(){
+				iid2 = $(this).find("option:selected").val();
+				$.ajax({
+					url: 'chart5/'+iid2+'/',
+					data: iid2,
+					success: function(data){
+						var table = document.getElementById('chart5');
+						$("#chart5").empty();
+						$("#chart5").html("<th>Name</th><th>Module</th><th>Score</th>");
+						var index = 0;
+						data.forEach(function(obj) {
+							var row = document.createElement('tr');
+							if (index%2) row.className = 'alt';
+							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</a></td><td>' + obj.topic + '</td><td>' + obj.final.toFixed(2) + '</td>';
+							table.appendChild(row);
+							index++;
+						});
+					}
+				});
+			});
+			$("#select_chart6").change(function(){
+				mid1 = $(this).find("option:selected").val();
+				$.ajax({
+					url: 'chart6/'+mid1+'/',
+					data: mid1,
+					success: function(data){
+						var table = document.getElementById('chart6');
+						$("#chart6").empty();
+						$("#chart6").html("<th>Name</th><th>Institution</th><th>Score</th>");
+						var index = 0;
+						data.forEach(function(obj) {
+							var row = document.createElement('tr');
+							if (index%2) row.className = 'alt';
+							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</td><td>' + obj.abbrev + '</td><td>' + obj.final + '</td>';
+							table.appendChild(row);
+							index++;
+						});
+					}
+				});
+			});
+			{% endif %}
+		});
+		function popdate(monthfield, yearfield){
+			var today = new Date()
+			var monthfield = document.getElementById("select_chart4a");
+			var yearfield = document.getElementById("select_chart4b");
+			for (var m=0; m<12; m++) monthfield.options[m] = new Option(monthtext[m], m);
+			monthfield.options[today.getMonth()] = new Option(monthtext[today.getMonth()], today.getMonth(), true, true);
+			for (var y=2014; y<=2019; y++) yearfield.options[y-2014] = new Option(y, y);
+			yearfield.options[today.getFullYear()-2014] = new Option(today.getFullYear(), today.getFullYear(), true, true);
+		};
+		function select_chart4() {
+			var months = document.getElementById("select_chart4a");
+			var month = months.options[months.selectedIndex].value;
+			var years = document.getElementById("select_chart4b");
+			var year = years.options[years.selectedIndex].value;
+			var date = year*10000+(parseInt(month)+1)*100;
+			$.ajax({
+				url: 'chart4/'+date+'/',
+				data: date,
+				success: function(data){
+					var table = document.getElementById('chart4');
+					$("#chart4").empty();
+					$("#chart4").html("<th>Location</th><th>Module</th><th>Date</th>");
+					var index = 0;
+					data.forEach(function(obj) {
+						var row = document.createElement('tr');
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td>' + obj.location + '</td><td>' + obj.topic + ' v' + obj.version + '</td><td><a href="master/training/'+ obj.training_id +'">' + parseInt(obj.date/10000) + '/' + parseInt((obj.date%10000)/100) + '/' + obj.date%100 + '</a></td>';
+						table.appendChild(row);
+						index++;
+					});
+				}
+			});
+		};
+		{% if user.is_authenticated %}
+		function select_chart7() {
+			chart7.unload();
+			var topics = document.getElementById("select_chart7a");
+			topic = topics.options[topics.selectedIndex].value;
+			var graddates = document.getElementById("select_chart7b");
+			graddate = graddates.options[graddates.selectedIndex].value;
+			$.ajax({
+				url: 'chart7/'+topic+'/'+graddate+'/',
+				data: graddate,
+				success: function(data){
+					setTimeout(function (){
+						$.each(data, function(key, value){
+							chart7.load({columns: [[key, value]]});
+						});
+					}, 300);
+				}
+			});
+		}
+		function select_chart8(abbrev) {
+			$.ajax({
+				url: 'chart8/'+topic+'/'+graddate+'/'+abbrev+'/',
+				data: abbrev,
+				success: function(data){
+					var table = document.getElementById('chart8');
+					$("#chart8").empty();
+					$("#chart8").html("<th>Name</th><th>Course</th><th>Graduation date</th>");
+					var index = 0;
+					data.forEach(function(obj) {
+						var row = document.createElement('tr');
+						date = obj.graddate.toString();
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td><a href="master/participant/'+ obj.ppant_id +'">' + obj.sname + ', ' + obj.fname + '</a></td><td>' + obj.designation + '</td><td>' + date.substring(0,4) + ' ' + date.substring(4,5) + 'H</td>';
+						table.appendChild(row);
+						index++;
+					});
+				}
+			});
+		}
+		{% endif %}
+	</script>
+{% endblock %}
+{% block body_block %}
+	<div id="box"><div id="chart1"></div></div>
+	<div id="box"><center>
+		</br></br>
+		<p style="font:12px sans-serif;">Trainings delivered in year </p>
+		<select id="select_chart1" style="width:150px;">
+			<option selected="select" disabled>Select a year:</option>
+			{% for y in years %}
+			<option value="{{ y.year }}" {% ifequal y.year training %}selected="selected"{% endifequal %}>{{ y.year }}</option>
+			{% endfor %}
+		</select></br></br>
+		<p style="font:12px sans-serif;">Students trained in year </p>
+		<select id="select_chart2" style="width:150px;">
+			<option selected="select" disabled>Select a year:</option>
+			{% for y in years %}
+			<option value="{{ y.year }}" {% ifequal y.year training %}selected="selected"{% endifequal %}>{{ y.year }}</option>
+			{% endfor %}
+		</select></br></br>
+	</center></div>
+	<div id="box"><div id="chart2"></div></div>
+	<div id="box">
+		</br></br>
+		<center><table id="chart3">
+			<th>Module</th><th>Date</th>
+		</table></center>
+	</div>
+	<div id="box"><center>
+		</br></br>
+		<p style="font:12px sans-serif;">Modules delivered to </p>
+		<select id="select_chart3" style="width:150px;">
+			<option selected="select" disabled>Select a site:</option>
+			{% for i in instns %}
+			<option value="{{ i.pk }}"{% ifequal i.abbrev institution %} selected="selected"{% endifequal %}>{{ i.abbrev }}</option>
+			{% endfor %}
+		</select></br></br>
+		<p style="font:12px sans-serif;">Trainings delivered in </p>
+		<form action="" name="form_chart4">
+			<select id="select_chart4a"></select>
+			<select id="select_chart4b"></select>
+			<button type="button" onclick="select_chart4()">Submit</button>
+		</form>
+	</div>
+	<div id="box">
+		</br></br>
+		<center><table id="chart4">
+			<th>Location</th><th>Module</th><th>Date</th>
+		</table></center>
+	</div>
+	{% if user.is_authenticated %}
+	<div id="box">
+		</br></br>
+		<center><table id="chart5">
+			<th>Name</th><th>Module</th><th>Score</th>
+		</table></center>
+	</div>
+	<div id="box"><center>
+		</br></br>
+		<p style="font:12px sans-serif;">Top 10 trainees from </p>
+		<select id="select_chart5" style="width:150px;">
+			<option selected="select" disabled>Select a site:</option>
+			{% for i in instns %}
+			<option value="{{ i.pk }}"{% ifequal i.abbrev institution %} selected="selected"{% endifequal %}>{{ i.abbrev }}</option>
+			{% endfor %}
+		</select></br></br>
+		<p style="font:12px sans-serif;">Top 10 trainees in </p>
+		<select id="select_chart6" style="width:150px;">
+			<option selected="select" disabled>Select a module:</option>
+			{% for m in modules %}
+			<option value="{{ m.pk }}"{% ifequal m.topic module %} selected="selected"{% endifequal %}>{{ m.topic }} v{{ m.version }}</option>
+			{% endfor %}
+		</select></br></br>
+	</div>
+	<div id="box">
+		</br></br>
+		<center><table id="chart6">
+			<th>Location</th><th>Module</th><th>Date</th>
+		</table></center>
+	</div>
+	<div id="box"><div id="chart7"></div></div>
+	<div id="box"><center>
+		</br></br>
+		<p style="font:12px sans-serif;">Students trained in </p>
+		<form action="" name="form_chart7">
+			<select id="select_chart7a" style="width:150px;">
+				<option selected="select" disabled>Select a module:</option>
+				{% for a in abbrevs %}
+				<option value="{{ a.topic }}"{% ifequal a.topic module %} selected="selected"{% endifequal %}>{{ a.topic }}</option>
+				{% endfor %}
+			</select>
+			</br></br><p style="font:12px sans-serif;">that graduated on/before </p>
+			<select id="select_chart7b" style="width:160px;">
+				<option selected="select" disabled>Select a semester:</option>
+				{% for g in graddates %}
+				{% if g.graddate %}
+				<option value="{{ g.graddate }}"{% ifequal g.graddate participant %} selected="selected"{% endifequal %}>{% widthratio g.graddate 10 1 as gyear %}{{ gyear }} H{% widthratio gyear 1 -10 as gfactor %}{{ g.graddate|add:gfactor }}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+			<button type="button" onclick="select_chart7()">Submit</button>
+		</form>
+	</div>
+	<div id="box" class="overflow">
+		<center><table id="chart8">
+			<th>Name</th><th>Course</th><th>Graduation date</th>
+		</table></center>
+	</div>
+	{% endif %}
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#stats').addClass('active');
+		popdate("monthselect","yearselect");
+	</script>
+{% endblock %}

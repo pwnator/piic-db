@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}SQL Query{% endblock %}
+{% block script_block %}
+	<script>
+		function lookup() {
+			var x = document.getElementById("query").value.replace(/ /g,'-');
+			var y = encodeURIComponent(x);
+			$.ajax({
+				url: y,
+				data: y,
+				success: function(data){
+					document.getElementById("result").innerHTML = JSON.stringify(data);
+				}
+			});
+		}
+	</script>
+{% endblock %}
+{% block body_block %}
+	{% if restricted %}<p><b>Note: Only the staff may fully utilize the page. Some functions may be disabled for the sake of data confidentiality.</b></p>{% endif %}
+	<p>Enter a valid SQLite3 query (tables: plotter_activity, plotter_evaluation, plotter_institution, plotter_institution_module, plotter_module, plotter_participant, plotter_training, plotter_training_instructor, plotter_training_staff, plotter_training_trainee):</p>
+	<textarea id="query" rows="5" cols="80">Input query here.</textarea></br>
+	<button onclick="lookup()" class="button button-small">Submit</button>
+	</br><p>Result:</br></p>
+	<p id="result"></p>
+	<div>
+		<p><strong>Note:</strong>★ indicates a required field for a new entry</p>
+		<div class="table">
+			<table>
+				<tr><th colspan="4">Module</th></tr>
+				<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Topic</td><td>topic</td><td>Char(8)</td><td></td></tr>
+			<tr><td>★Full name</td><td>fullname</td><td>Char(64)</td><td></td></tr>
+			<tr><td>★Version #</td><td>version</td><td>Dec</td><td></td></tr>
+			<tr><td>Date modified</td><td>moddate</td><td>Int</td><td>YYYYMMDD format</td></tr>
+			<tr><td>Description</td><td>description</td><td>Text</td><td></td></tr>
+			<tr><td>Topics</td><td>topics</td><td>Text</td><td></td></tr>
+			<tr><td>Remarks</td><td>remarks</td><td>Text</td><td>May include improvements from previous version (currently unused)</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Institution</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Abbreviation</td><td>abbrev</td><td>Char(16)</td><td></td></tr>
+			<tr><td>★Full name</td><td>fullname</td><td>Char(64)</td><td></td></tr>
+			<tr><td>Email</td><td>email</td><td>Email</td><td></td></tr>
+			<tr><td>Address</td><td>address</td><td>Char(128)</td><td></td></tr>
+			<tr><td>City</td><td>city</td><td>Char(32)</td><td></td></tr>
+			<tr><td>Province</td><td>province</td><td>Char(16)</td><td></td></tr>
+			<tr><td>Logo</td><td>logo</td><td>Char(32)</td><td>bit.ly link, may be changed to ImageField (currently unused)</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="2">Institution_Module</th></tr>
+			<tr><td><strong>Table 1</strong></td><td><strong>Table 2</strong></td></tr>
+			<tr><td>instn_id</td><td>module_id</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Participant</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Surname</td><td>sname</td><td>Char(32)</td><td></td></tr>
+			<tr><td>★First name</td><td>fname</td><td>Char(64)</td><td></td></tr>
+			<tr><td>Middle initial</td><td>mi</td><td>Char(4)</td><td></td></tr>
+			<tr><td>Email</td><td>email</td><td>Email</td><td>Basically Char(254) with a built-in validator when creating a new entry</td></tr>
+			<tr><td>Contact #</td><td>contactn</td><td>Int</td><td></td></tr>
+			<tr><td>Institution</td><td>instn_id</td><td>ForeignKey</td><td>From <strong>Institution</strong> table</td></tr>
+			<tr><td>Designation</td><td>designation</td><td>Char(64)</td><td></td></tr>
+			<tr><td>Address</td><td>address</td><td>Char(128)</td><td></td></tr>
+			<tr><td>City</td><td>city</td><td>Char(32)</td><td></td></tr>
+			<tr><td>Province</td><td>province</td><td>Char(16)</td><td></td></tr>
+			<tr><td>Graduation date</td><td>graddate</td><td>Int</td><td>YYYYH format</td></tr>
+			<tr><td>Instructor</td><td>instructor</td><td>Bool</td><td></td></tr>
+			<tr><td>LinkedIn</td><td>linkedin</td><td>Char(255)</td><td>Full link, may be set to bit.ly link (currently unused)</td></tr>
+			<tr><td>Resume</td><td>resume</td><td>Char(255)</td><td>Full link, may be set to bit.ly link (currently unused)</td></tr>
+			<tr><td>Interview availability</td><td>availability</td><td>Bool</td><td></td></tr>
+			<tr><td>Employment status</td><td>employment</td><td>Bool</td><td></td></tr>
+			<tr><td>Employment details</td><td>workdetails</td><td>Text</td><td></td></tr>
+			<tr><td>Remarks</td><td>remarks</td><td>Text</td><td></td></tr>
+			<tr><td>Last edit date</td><td>modified</td><td>DateTime</td><td></td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Training</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Module</td><td>module_id</td><td>ForeignKey</td><td>From <strong>Module</strong> table</td></tr>
+			<tr><td>★Location</td><td>location</td><td>Char(16)</td><td></td></tr>
+			<tr><td>Start date</td><td>date</td><td>Int</td><td>YYYYMMDD format</td></tr>
+			<tr><td>Year</td><td>Int</td><td></td><td></td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="2">Training_Instructor</th></tr>
+			<tr><td><strong>Table 1</strong></td><td><strong>Table 2</strong></td></tr>
+			<tr><td>training_id</td><td>participant_id</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="2">Training_Trainee</th></tr>
+			<tr><td><strong>Table 1</strong></td><td><strong>Table 2</strong></td></tr>
+			<tr><td>training_id</td><td>participant_id</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="2">Training_Staff</th></tr>
+			<tr><td><strong>Table 1</strong></td><td><strong>Table 2</strong></td></tr>
+			<tr><td>training_id</td><td>participant_id</td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Activity</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Training</td><td>training_id</td><td>ForeignKey</td><td>From <strong>Training</strong> table</td></tr>
+			<tr><td>Participant</td><td>participant_id</td><td>ForeignKey</td><td>From <strong>Participant</strong> table</td></tr>
+			<tr><td>★Category</td><td>category</td><td>Char(16)</td><td>May be 'quiz', 'lab', 'evalmod', or 'evaltrnr';</td></tr>
+			<tr><td>Title</td><td>title</td><td>Char(128)</td><td></td></tr>
+			<tr><td>Score</td><td>score</td><td>Dec</td><td></td></tr>
+			<tr><td>Max</td><td>total</td><td>Dec</td><td></td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Evaluation</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Activity</td><td>activity_id</td><td>ForeignKey</td><td>From <strong>Activity</strong> table</td></tr>
+			<tr><td>Question</td><td>question</td><td>Char(64)</td><td></td></tr>
+			<tr><td>Answer</td><td>answer</td><td>Text</td><td></td></tr>
+		</table></div>
+		</br>
+		<div class="table"><table>
+			<tr><th colspan="4">Message</th></tr>
+			<tr><td><strong>Field</strong></td><td><strong>Name</strong></td><td><strong>Data type</strong></td><td><strong>Notes</strong></td></tr>
+			<tr><td>★ID #</td><td>id</td><td>Int</td><td>Unique identifier</td></tr>
+			<tr><td>★Participant</td><td>participant_id</td><td>ForeignKey</td><td>From <strong>Participant</strong> table</td></tr>
+			<tr><td>Medium</td><td>medium</td><td>Char(4)</td><td>May be 'text' or 'mail' (currently unused)</td></tr>
+			<tr><td>Category</td><td>category</td><td>Char(64)</td><td></td></tr>
+			<tr><td>Timestamp</td><td>timestamp</td><td>DateTime</td><td></td></tr>
+		</table></div>
+		</br>
+		</div>
+	</div>
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#utilities').addClass('active');
+	</script>
+{% endblock %}

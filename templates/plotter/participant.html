@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Participant page{% endblock %}
+{% block script_block %}
+	<script type="text/javascript" charset="utf-8">
+		var availability = $('#availability').prop('checked');
+		var employment = $('#employment').prop('checked');
+		{% if results.0 %}
+			document.title = "{{ results.0.sname }}, {{ results.0.fname }} | Philippine Institute for Integrated Circuits";
+		{% endif %}
+		function grades(training_id){
+			$.ajax({
+				url: 'grades/' + training_id + '/',
+				data: training_id,
+				success: function(data){
+					var quiz = $("#td_"+String(training_id)+"_Quiz");
+					var lab = $("#td_"+String(training_id)+"_Lab");
+					if (!data.length) {
+						quiz.html("N/A");
+						lab.html("N/A");
+					}
+					data.forEach(function(obj) {
+						if (obj.category == "Quiz") quiz.html(obj.score);
+						else if (obj.category == "Lab") lab.html(obj.score);
+						else {
+							quiz.html("N/A");
+							lab.html("N/A");
+						}
+					});
+				}
+			});
+		}
+		function update() {
+			var w = $('#availability').prop('checked');
+			var x = $('#employment').prop('checked');
+			var y = document.getElementById("workdetails").value;
+			var z = document.getElementById("remarks").value;
+			if (y=='') y = "None";
+			if (z=='') z = "None";
+			$.ajax({
+				url: 'update/'+w+'/'+x+'/'+encodeURIComponent(y)+'/'+encodeURIComponent(z)+'/',
+				data: w,
+				success: function(data){
+					window.location.reload();
+				}
+			});
+		}
+	</script>
+{% endblock %}
+{% block body_block %}
+	{% if results %}
+		{% if restricted %}<p><b>Note: Only the staff may fully utilize the page. Some functions may be disabled for the sake of data confidentiality.</b></p>{% endif %}
+		<h1>{{ results.0.sname }}, {{ results.0.fname }} {% if results.0.mi %}{{ results.0.mi }}{% endif %}</h1></br>
+		<p>{% if results.0.abbrev %}Institution: <a href="../../institution/{{ results.0.instn_id }}">{{ results.0.abbrev }}</a>{% endif %}</p>
+		<p>{% if results.0.email %}Email: {% if restricted %}**confidential**{% else %}{{ results.0.email }}{% endif %}{% endif %}</p>
+		<p>{% if results.0.contactn %}Contact number: {% if restricted %}**confidential**{% else %}{{ results.0.contactn }}{% endif %}{% endif %}</p>
+		<p>Instructor: <b>{{ results.0.instructor|yesno:"Yes,No" }}</b></p>
+		<p>{% if results.0.designation %}Designation: {{ results.0.designation }}{% endif %}</p>
+		<p>{% if results.0.graddate %}Graduation date: {% widthratio results.0.graddate 10 1 as gyear %}{% widthratio gyear 1 -10 as gfactor %}{{ results.0.graddate|add:gfactor }}H {{ gyear }}{% endif %}</p>
+		<p>{% if results.0.address %}Address: {% if restricted %}**confidential**{% else %}{{ results.0.address }}{% if results.0.city %}, {{ results.0.city }}{% if results.0.province %}, {{ results.0.province }}{% endif %}{% endif %}{% endif %}{% endif %}</p>
+		<div style="float:left;">Available for company interviews:</div>
+		<div class="onoffswitch">
+			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="availability" {% if results.0.availability %}checked{% endif %}>
+			<label class="onoffswitch-label" for="availability">
+				<span class="onoffswitch-inner"></span>
+				<span class="onoffswitch-switch"></span>
+			</label>
+		</div>
+		</br></br>
+		<div style="float:left;">Employment status:</div>
+		<div class="onoffswitch">
+			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="employment" {% if results.0.employment %}checked{% endif %}>
+			<label class="onoffswitch-label" for="employment">
+				<span class="onoffswitch-inner"></span>
+				<span class="onoffswitch-switch"></span>
+			</label>
+		</div>
+		</br></br>
+		<p>Employment details: (please avoid using forward slashes "/")</p><textarea id="workdetails" rows="2" cols="60">{{ results.0.workdetails }}</textarea></br></br>
+		<p>Remarks/plans as of <b>{{ results.0.modified }}</b>: (please avoid using forward slashes "/")</p><textarea id="remarks" rows="5" cols="60">{{ results.0.remarks }}</textarea></br></br>
+		<button onclick="update()" class="button button-small">Update</button>
+		<div id="g_{{ results.0.id }}">
+			<p><b>Trainings</b></p>
+			<center><table id="t_{{ results.0.id }}">
+				<th>Module</th><th>Date</th><th>Quiz</th><th>Lab</th><th>Certificate</th>
+				{% for r in results %}
+				<tr><td><a href="../../module/{{ r.mod_id }}">{{ r.topic }}</a></td><td><a href="../../training/{{ r.training_id }}">{% widthratio r.date 10000 1 as syear %}{% widthratio syear 1 -10000 as srem1 %}{% with r.date|add:srem1 as srem2 %}{% widthratio srem2 100 1 as smonth %}{% widthratio smonth 1 -100 as srem3 %}{{ syear }}/{{ smonth }}/{{ srem2|add:srem3 }}{% endwith %}</td><td id="td_{{ r.training_id }}_Quiz"></td><td id="td_{{ r.training_id }}_Lab"></td><td><a href="../../../certificate/{{ r.training_id }}/{{ results.0.id }}" target="_blank">Generate</a></td></tr>
+				{% endfor %}
+			</table></center>
+		</div>
+	{% endif %}
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#database').addClass('active');
+		{% for r in results %}
+			grades({{ r.training_id }});
+		{% endfor %}
+	</script>
+{% endblock %}

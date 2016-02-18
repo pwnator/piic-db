@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Training list{% endblock %}
+{% block script_block %}
+	<script type="text/javascript" charset="utf-8">
+		var monthtext=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		function list(mod_id){
+			$.ajax({
+				url: '../module/trainings/' + mod_id + '/',
+				data: mod_id,
+				success: function(data){
+					var table = document.getElementById("t_"+String(mod_id));
+					$("#t_"+String(mod_id)).empty();
+					$("#t_"+String(mod_id)).html("<th>Location</th><th>Date</th><th>Year</th><th>Participating institutions</th>");
+					var index = 0;
+					var prevdate;
+					data.forEach(function(obj) {
+						var date = obj.date.toString()
+						var curr = obj.date;				
+						var row = document.createElement('tr');
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td>' + obj.location + '</a></td><td><a href="' + obj.training_id + '">' + date.substring(0,4) + '/' + date.substring(4,6) + '/' + date.substring(6) + '</a></td><td>' + obj.year + '</td><td id="td_' + String(mod_id) + '_' + String(index) + '"><a href="../institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td>';
+						if (prevdate != curr){
+							table.appendChild(row);
+							index++;
+						}
+						else {
+							modcell = document.getElementById("td_"+String(mod_id)+"_"+String(index-1));
+							modcell.innerHTML = modcell.innerHTML + ', <a href="../institution/' + obj.instn_id + '">' + obj.abbrev + '</a>';
+						}
+						prevdate = curr;
+					});
+				}
+			});
+		};
+	</script>
+{% endblock %}
+{% block body_block %}
+	{% for m in mods %}
+		{% if m.mod_id == None %}
+			<div id="g_{{ m.mod_id }}"></br><center><p>No data</p><table id="t_{{ m.mod_id }}"></table></center></div>
+		{% else %}
+			<div id="g_{{ m.mod_id }}"></br><center><p><a href="../module/{{ m.mod_id }}">{{ m.fullname }} v{{ m.version }} ({{ m.topic }})</a></p><table id="t_{{ m.mod_id }}"></table></center></div>
+		{% endif %}
+	{% endfor %}
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#database').addClass('active');
+		{% for m in mods %}
+			{% if m.mod_id == None %}
+				list('None');
+			{% else %}
+				list({{ m.mod_id }});
+			{% endif %}
+		{% endfor %}
+	</script>
+{% endblock %}

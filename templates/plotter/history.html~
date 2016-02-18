@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Contact history{% endblock %}
+{% block body_block %}
+	<div id="g_history">
+	<div id="box2">
+		<h3>Modification history</h3></br>
+		<table>
+			<th>Name</th><th>Latest edit</th><th>Remarks</th>
+			{% for r in remarks %}
+			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ r.id }}">{{ r.sname }}, {{ r.fname }}</a></td><td>{{ r.modified }}</td><td>{{ r.remarks }}</td></tr>
+			{% endfor %}
+		</table>
+	</div>
+	<div id="box2">
+		<h3>SMS history</h3></br>
+		<table>
+			<th>Name</th><th>Send date</th><th>Purpose</th>
+			{% for m in messages %}
+			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ m.participant_id }}">{{ m.sname }}, {{ m.fname }}</a></td><td>{{ m.timestamp }}</td><td>{{ m.category }}</td></tr>
+			{% endfor %}
+		</table>
+	</div>
+	<p></p>
+	</div>
+{% endblock %}

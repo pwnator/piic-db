@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Participant list{% endblock %}
+{% block script_block %}
+	<script type="text/javascript" charset="utf-8">
+		function list(instn_id){
+			$.ajax({
+				url: 'participant_list/' + instn_id + '/',
+				data: instn_id,
+				success: function(data){
+					var table = document.getElementById("t_"+String(instn_id));
+					$("#t_"+String(instn_id)).empty();
+					$("#t_"+String(instn_id)).html("<th>Name</th><th>Designation</th><th>Expected graduation date</th><th>Interview availability</th><th>Employment status<th>E-mail</th><th>Contact number</th><th>Module</th>");
+					var index = 0;
+					var prevname;
+					data.forEach(function(obj) {
+						var date = 0;
+						var parsedate, availability, employment;
+						var name = obj.sname + ', ' + obj.fname;
+						if (obj.graddate) date = obj.graddate.toString();
+						if (obj.graddate) parsedate = date.substring(0,4) + ' ' + date.substring(4,5) + 'H';
+						else parsedate = "N/A";
+						if (obj.availability) availability = "Yes";
+						else availability = "No";
+						if (obj.employment) employment = "Yes";
+						else employment = "No";
+						var row = document.createElement('tr');
+						if (index%2) row.className = 'alt';
+						{% if restricted %}
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>**confidential**</td><td>**confidential**</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td>';
+						{% else %}
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td>';
+						{% endif %}
+						if (prevname != name){
+							table.appendChild(row);
+							index++;
+						}
+						else {
+							modcell = document.getElementById('td_'+String(instn_id)+'_'+String(index-1));
+							modcell.innerHTML = modcell.innerHTML + ', <a href="../module/' + obj.mod_id + '">' + obj.topic + '</a>';
+						}
+						prevname = name;
+					});
+				}
+			});
+		};
+	</script>
+{% endblock %}
+{% block body_block %}
+	{% for i in instns %}
+		{% if i.instn_id == None %}
+			<div id="g_{{ i.instn_id }}"></br><center><p>No data</p><table id="t_{{ i.instn_id }}"></table></center></div>
+		{% else %}
+			<div id="g_{{ i.instn_id }}"></br><center><p><a href="../institution/{{ i.instn_id }}">{{ i.fullname }} ({{ i.abbrev }})</a></p><table id="t_{{ i.instn_id }}"></table></center></div>
+		{% endif %}
+	{% endfor %}
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#database').addClass('active');
+		{% for i in instns %}
+			{% if i.instn_id == None %}
+				list('None');
+			{% else %}
+				list({{ i.instn_id }});
+			{% endif %}
+		{% endfor %}
+	</script>
+{% endblock %}
