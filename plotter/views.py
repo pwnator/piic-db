@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from docx import Document
 from docx.shared import Pt
+from math import floor
 from plotter.models import *
 import binascii, datetime, hashlib, json, os
 
@@ -217,7 +218,15 @@ def certificate(request, training_id, ppant_id):
 			if '<<serial>>' in run.text:
 				code = 'participant'+ppant_id+'training'+training_id
 				key = hashlib.pbkdf2_hmac('sha256', code.encode('utf-16be'), b'piic', 10000)
-				serial = binascii.hexlify(key).decode('utf-8')[:24]
+				base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				serial = []
+				key = int.from_bytes(key, byteorder='little')
+				while key:
+					rem = key % 62
+					key = key // 62
+					serial.append(base[rem])
+				serial.reverse()
+				serial = ''.join(serial)[:8]
 				run.text = 'Serial: ' + serial
 			if '<<verification>>' in run.text: run.text = 'The authenticity of this certificate can be verified at\nhttp://db.portal.piic.org.ph/verif/' + serial + '/'
 	document.save('static/cert/'+serial+'.docx')
