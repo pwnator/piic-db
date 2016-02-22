@@ -196,6 +196,19 @@ def employed(request):
 	else:
 		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn')})
 
+def encrypt(code):
+	key = hashlib.pbkdf2_hmac('sha256', code.encode('utf-16be'), b'piic', 10000)
+	base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	serial = []
+	key = int.from_bytes(key, byteorder='little')
+	while key:
+		rem = key % 62
+		key = key // 62
+		serial.append(base[rem])
+	serial.reverse()
+	serial = ''.join(serial)[:8]
+	return serial
+
 @login_required
 def certificate(request, training_id, ppant_id):
 	t = Training.objects.get(pk=training_id)
@@ -217,16 +230,7 @@ def certificate(request, training_id, ppant_id):
 			if '<<honors>>' in run.text: run.text = ''
 			if '<<serial>>' in run.text:
 				code = 'participant'+ppant_id+'training'+training_id
-				key = hashlib.pbkdf2_hmac('sha256', code.encode('utf-16be'), b'piic', 10000)
-				base = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-				serial = []
-				key = int.from_bytes(key, byteorder='little')
-				while key:
-					rem = key % 62
-					key = key // 62
-					serial.append(base[rem])
-				serial.reverse()
-				serial = ''.join(serial)[:8]
+				serial = encrypt(code)
 				run.text = 'Serial: ' + serial
 			if '<<verification>>' in run.text: run.text = 'The authenticity of this certificate can be verified at\nhttp://db.portal.piic.org.ph/verif/' + serial + '/'
 	document.save('static/cert/'+serial+'.docx')
