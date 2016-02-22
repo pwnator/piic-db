@@ -5,12 +5,13 @@ from django.db import models
 
 class ModuleInline(admin.TabularInline):
 	model = Institution.module.through
+	exclude = ('fullname','moddate','description','topics','remarks')
 
 class ParticipantInline(admin.TabularInline):
 	model = Participant
 	fk_name = 'instn'
 	ordering = ['sname','fname']
-	exclude = ('address','city','province','instructor','linkedin','resume','assignedstaff')
+	exclude = ('address','city','province','instructor','linkedin','resume','remarks','workdetails')
 	formfield_overrides = {
 		models.CharField: {'widget': TextInput(attrs={'size':'10'})},
 		models.TextField: {'widget': TextInput(attrs={'rows':4,'cols':40})},
@@ -42,8 +43,9 @@ class ModuleAdmin(admin.ModelAdmin):
 	}
 
 class InstitutionAdmin(admin.ModelAdmin):
-	inlines = [ParticipantInline]
+	inlines = [ModuleInline,ParticipantInline]
 	ordering = ['abbrev']
+	exclude = ['module']
 	formfield_overrides = {
 		models.CharField: {'widget': TextInput(attrs={'size':'20'})},
 		models.TextField: {'widget': TextInput(attrs={'rows':4,'cols':40})},
@@ -51,12 +53,12 @@ class InstitutionAdmin(admin.ModelAdmin):
 
 class ParticipantAdmin(admin.ModelAdmin):
 	fieldsets = [
-		('Personal information', {'fields': [('sname','fname'),'instn','email','contactn',('designation','graddate'),('address','city','province'),'instructor',('availability','employment'),'workdetails','remarks','modified']}),
+		('Personal information', {'fields': [('sname','fname','mi'),'instn','email','contactn',('designation','graddate'),('address','city','province'),('instructor','availability','employment'),'workdetails','remarks','modified']}),
 	]
 	readonly_fields = ('modified',)
 	inlines = [TrainingInline]
 	list_display = ('__str__','instn')
-	search_fields = ['sname','fname','instn__abbrev','instn__fullname']
+	search_fields = ['sname','fname','instn__abbrev','instn__fullname','designation']
 	ordering = ['instn','sname']
 
 class TrainingAdmin(admin.ModelAdmin):
