@@ -40,6 +40,7 @@ def index(request):
 		'masters' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(designation__startswith='MS'),
 		'faculty' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(Q(designation__contains='Faculty')|Q(designation__contains='Lecturer')),
 		'engineers' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(designation__contains='Engineer'),
+		'total' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct(),
 		'instns': Institution.objects.order_by('abbrev'),
 		'years' : Training.objects.order_by('year').values('year').distinct(),
 		'modules' : Module.objects.order_by('topic', 'version'),
