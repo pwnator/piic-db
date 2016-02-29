@@ -12,7 +12,7 @@
 				success: function(data){
 					var table = document.getElementById("t_"+String(instn_id));
 					$("#t_"+String(instn_id)).empty();
-					$("#t_"+String(instn_id)).html("<th>Name</th><th>Designation</th><th>Expected graduation date</th><th>Interview availability</th><th>Employment status<th>E-mail</th><th>Contact number</th><th>Module</th>");
+					$("#t_"+String(instn_id)).html("<th>Name</th><th>Designation</th><th>Expected graduation date</th><th>Interview availability</th><th>Employment status<th>E-mail</th><th>Contact number</th><th>Module</th><th>Last modified</th>");
 					var index = 0;
 					var prevname;
 					data.forEach(function(obj) {
@@ -29,9 +29,9 @@
 						var row = document.createElement('tr');
 						if (index%2) row.className = 'alt';
 						{% if restricted %}
-							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>**confidential**</td><td>**confidential**</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td>';
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>**confidential**</td><td>**confidential**</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + obj.modified + '</td>';
 						{% else %}
-							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td>';
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + obj.modified + '</td>';
 						{% endif %}
 						if (prevname != name){
 							table.appendChild(row);
