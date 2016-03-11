@@ -13,12 +13,12 @@
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
-		var chart1, chart2, chart7;
+		var chart1a, chart1b, chart2a, chart2b, chart7;
 		var monthtext = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 		var topic, graddate;
 		$(document).ready(function(){
-			chart1 = c3.generate({
-				bindto: '#chart1',
+			chart1a = c3.generate({
+				bindto: '#chart1a',
 				data: {
 					columns: [],
 					type: 'donut',
@@ -26,8 +26,26 @@
 				donut: {label: {format: function(value){return value;}}},
 				transition: {duration: 600}
 			});
-			chart2 = c3.generate({
-				bindto: '#chart2',
+			chart1b = c3.generate({
+				bindto: '#chart1b',
+				data: {
+					columns: [],
+					type: 'donut',
+				},
+				donut: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
+			chart2a = c3.generate({
+				bindto: '#chart2a',
+				data: {
+					columns: [],
+					type: 'donut',
+				},
+				donut: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
+			chart2b = c3.generate({
+				bindto: '#chart2b',
 				data: {
 					columns: [],
 					type: 'donut',
@@ -50,38 +68,70 @@
 			});
 			{% endif %}
 			$("#select_chart1").change(function(){
-				chart1.unload();
-				$('.c3-chart-arcs-title', $(chart1.element)).text('');
+				chart1a.unload();
+				$('.c3-chart-arcs-title', $(chart1a.element)).text('');
 				yid1 = $(this).find("option:selected").val();
 				$.ajax({
-					url: 'chart1/'+yid1+'/',
+					url: 'chart1a/'+yid1+'/',
 					data: yid1,
 					success: function(data){
 						var sum = 0;
 						setTimeout(function (){
 							$.each(data, function(key, value){
 								sum = sum + value;
-								chart1.load({columns: [[key, value]]});
-								$('.c3-chart-arcs-title', $(chart1.element)).text(sum+' trainings delivered');
+								chart1a.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart1a.element)).text(sum+' trainings delivered');
+							});
+						}, 300);
+					}
+				});
+				chart1b.unload();
+				$('.c3-chart-arcs-title', $(chart1b.element)).text('');
+				$.ajax({
+					url: 'chart1b/'+yid1+'/',
+					data: yid1,
+					success: function(data){
+						var sum = 0;
+						setTimeout(function (){
+							$.each(data, function(key, value){
+								sum = sum + value;
+								chart1b.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart1b.element)).text(sum+' seats allocated');
 							});
 						}, 300);
 					}
 				});
 			});
 			$("#select_chart2").change(function(){
-				chart2.unload();
-				$('.c3-chart-arcs-title', $(chart2.element)).text('');
+				chart2a.unload();
+				$('.c3-chart-arcs-title', $(chart2a.element)).text('');
 				yid2 = $(this).find("option:selected").val();
 				$.ajax({
-					url: 'chart2/'+yid2+'/',
+					url: 'chart2a/'+yid2+'/',
 					data: yid2,
 					success: function(data){
 						var sum = 0;
 						setTimeout(function (){
 							$.each(data, function(key, value){
 								sum = sum + value;
-								chart2.load({columns: [[key, value]]});
-								$('.c3-chart-arcs-title', $(chart2.element)).text(sum+' students trained');
+								chart2a.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart2a.element)).text(sum+' trained');
+							});
+						}, 300);
+					}
+				});
+				chart2b.unload();
+				$('.c3-chart-arcs-title', $(chart2b.element)).text('');
+				$.ajax({
+					url: 'chart2b/'+yid2+'/',
+					data: yid2,
+					success: function(data){
+						var sum = 0;
+						setTimeout(function (){
+							$.each(data, function(key, value){
+								sum = sum + value;
+								chart2b.load({columns: [[key, value]]});
+								$('.c3-chart-arcs-title', $(chart2b.element)).text(sum+' seats');
 							});
 						}, 300);
 					}
@@ -226,8 +276,8 @@
 	</script>
 {% endblock %}
 {% block body_block %}
-	<center><p style="font:14px sans-serif;">Total undergraduates trained: <b>{{ students.count }}</b></p><p style="font:14px sans-serif;">Total MS students trained: <b>{{ masters.count }}</b></p><p style="font:14px sans-serif;">Total faculty members trained: <b>{{ faculty.count }}</b></p><p style="font:14px sans-serif;">Total engineers trained: <b>{{ engineers.count }}</b></p><p style="font:16px sans-serif;">Total: <b>{{ total.count }}</b></p></center>
-	<div id="box"><div id="chart1"></div></div>
+	<div style="border-style:solid;border-color:#B21501"><center></br><p style="font:14px sans-serif;">Total undergraduates trained: <b>{{ students.count }}</b></p><p style="font:14px sans-serif;">Total MS students trained: <b>{{ masters.count }}</b></p><p style="font:14px sans-serif;">Total faculty members trained: <b>{{ faculty.count }}</b></p><p style="font:14px sans-serif;">Total engineers trained: <b>{{ engineers.count }}</b></p><p style="font:16px sans-serif;">Total trained: <b>{{ total.count }}</b></p></center></div></br></br>
+	<div id="box"><div id="chart1a"></div></div>
 	<div id="box"><center>
 		</br></br>
 		<p style="font:12px sans-serif;">Trainings delivered in year </p>
@@ -236,8 +286,12 @@
 			{% for y in years %}
 			<option value="{{ y.year }}" {% ifequal y.year training %}selected="selected"{% endifequal %}>{{ y.year }}</option>
 			{% endfor %}
-		</select></br></br>
-		<p style="font:12px sans-serif;">Students trained in year </p>
+		</select>
+	</center></div>
+	<div id="box"><div id="chart1b"></div></div>
+	<div id="box"><div id="chart2a"></div></div>
+	<div id="box"><center>
+		<p style="font:12px sans-serif;">Participants trained in year </p>
 		<select id="select_chart2" style="width:150px;">
 			<option selected="select" disabled>Select a year:</option>
 			{% for y in years %}
@@ -245,7 +299,7 @@
 			{% endfor %}
 		</select></br></br>
 	</center></div>
-	<div id="box"><div id="chart2"></div></div>
+	<div id="box"><div id="chart2b"></div></div>
 	<div id="box">
 		</br></br>
 		<center><table id="chart3">

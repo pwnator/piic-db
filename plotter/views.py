@@ -50,16 +50,30 @@ def index(request):
 	return render(request, 'plotter/index.html', context_dict)
 
 @login_required
-def chart1(request, year):
+def chart1a(request, year):
 	cursor = connection.cursor()
 	cursor.execute('SELECT topic,COUNT(*) FROM plotter_module,plotter_training WHERE year=%s AND plotter_module.ID=plotter_training.module_id GROUP BY topic', [year])
 	results = cursor.fetchall()
 	return JsonResponse(dict(results))
 
 @login_required
-def chart2(request, year):
+def chart1b(request, year):
+	cursor = connection.cursor()
+	cursor.execute('SELECT topic,COUNT(participant_id) FROM plotter_module,plotter_training,plotter_training_trainee WHERE year=%s AND plotter_module.ID=plotter_training.module_id AND training_id=plotter_training.ID GROUP BY topic', [year])
+	results = cursor.fetchall()
+	return JsonResponse(dict(results))
+
+@login_required
+def chart2a(request, year):
 	cursor = connection.cursor()
 	cursor.execute('SELECT abbrev,COUNT(*) FROM plotter_institution,plotter_participant WHERE plotter_participant.ID IN (SELECT participant_id FROM plotter_training_trainee WHERE training_id IN (SELECT ID FROM plotter_training WHERE year=%s)) AND plotter_institution.ID=plotter_participant.instn_id GROUP BY abbrev', [year])
+	results = cursor.fetchall()
+	return JsonResponse(dict(results))
+
+@login_required
+def chart2b(request, year):
+	cursor = connection.cursor()
+	cursor.execute('SELECT designation,COUNT(participant_id) FROM plotter_training,plotter_training_trainee,plotter_participant WHERE year=%s AND participant_id=plotter_participant.ID AND training_id=plotter_training.ID GROUP BY designation', [year])
 	results = cursor.fetchall()
 	return JsonResponse(dict(results))
 
@@ -197,9 +211,9 @@ def history(request):
 @login_required
 def employed(request):
 	if request.user.username == 'dost':
-		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).order_by('instn'), 'restricted' : True})
+		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).exclude(company__exact='').order_by('instn'), 'restricted' : True})
 	else:
-		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).order_by('instn')})
+		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).exclude(company__exact='').order_by('instn')})
 
 def encrypt(code):
 	key = hashlib.pbkdf2_hmac('sha256', code.encode('utf-16be'), b'piic', 10000)

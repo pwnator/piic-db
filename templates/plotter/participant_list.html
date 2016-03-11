@@ -4,6 +4,7 @@
 {% load staticfiles %}
 {% block title %}Participant list{% endblock %}
 {% block script_block %}
+	<script src="{% static "js/date.js" %}"></script>
 	<script type="text/javascript" charset="utf-8">
 		function list(instn_id){
 			$.ajax({
