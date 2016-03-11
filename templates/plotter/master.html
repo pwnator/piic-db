@@ -53,9 +53,9 @@
 						else employment = "No";
 						var row = document.createElement('tr');
 						{% if restricted %}
-							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>**confidential**</td><td>**confidential**</td><td>' + Date(obj.modified) + '</td>';
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>**confidential**</td><td>**confidential**</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
 						{% else %}
-							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + Date(obj.modified) + '</td>';
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
 						{% endif %}
 						if (prevname != name){
 							tbody.appendChild(row);

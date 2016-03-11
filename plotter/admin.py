@@ -53,7 +53,7 @@ class InstitutionAdmin(admin.ModelAdmin):
 
 class ParticipantAdmin(admin.ModelAdmin):
 	fieldsets = [
-		('Personal information', {'fields': [('sname','fname','mi'),'instn','email','contactn',('designation','graddate'),('address','city','province'),('instructor','availability','employment'),'workdetails','remarks','modified']}),
+		('Personal information', {'fields': [('sname','fname','mi'),'instn','email','contactn',('designation','graddate'),('address','city','province'),('instructor','availability','employment'),'company','workdetails','remarks','modified']}),
 	]
 	readonly_fields = ('modified',)
 	inlines = [TrainingInline]

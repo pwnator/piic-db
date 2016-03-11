@@ -29,9 +29,9 @@
 						var row = document.createElement('tr');
 						if (index%2) row.className = 'alt';
 						{% if restricted %}
-							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>**confidential**</td><td>**confidential**</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + Date(obj.modified) + '</td>';
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>**confidential**</td><td>**confidential**</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
 						{% else %}
-							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + Date(obj.modified) + '</td>';
+							row.innerHTML = '<td><a href="../participant/'+ obj.ppant_id +'">' + name + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td id="td_' + String(instn_id) + '_' + String(index) + '"><a href="../module/' + obj.mod_id + '">' + obj.topic + '</a></td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
 						{% endif %}
 						if (prevname != name){
 							table.appendChild(row);

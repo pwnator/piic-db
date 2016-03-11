@@ -197,9 +197,9 @@ def history(request):
 @login_required
 def employed(request):
 	if request.user.username == 'dost':
-		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'restricted' : True})
+		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).order_by('instn'), 'restricted' : True})
 	else:
-		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn')})
+		return render(request, 'plotter/employed.html', {'participants' : Participant.objects.filter(employment=True).order_by('instn'), 'micro' : Participant.objects.exclude(company__isnull=True).order_by('instn')})
 
 def encrypt(code):
 	key = hashlib.pbkdf2_hmac('sha256', code.encode('utf-16be'), b'piic', 10000)

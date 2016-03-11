@@ -60,7 +60,7 @@
 		<p>{% if results.0.designation %}Designation: {{ results.0.designation }}{% endif %}</p>
 		<p>{% if results.0.graddate %}Graduation date: {% widthratio results.0.graddate 10 1 as gyear %}{% widthratio gyear 1 -10 as gfactor %}{{ results.0.graddate|add:gfactor }}H {{ gyear }}{% endif %}</p>
 		<p>{% if results.0.address %}Address: {% if restricted %}**confidential**{% else %}{{ results.0.address }}{% if results.0.city %}, {{ results.0.city }}{% if results.0.province %}, {{ results.0.province }}{% endif %}{% endif %}{% endif %}{% endif %}</p>
-		<div style="float:left;">Available for company interviews:</div>
+		<div style="float:left; margin-top:2px;">Available for company interviews:</div>
 		<div class="onoffswitch">
 			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="availability" {% if results.0.availability %}checked{% endif %}>
 			<label class="onoffswitch-label" for="availability">
@@ -69,7 +69,7 @@
 			</label>
 		</div>
 		</br></br>
-		<div style="float:left;">Employment status:</div>
+		<div style="float:left; margin-top:2px;">Employment status:</div>
 		<div class="onoffswitch">
 			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="employment" {% if results.0.employment %}checked{% endif %}>
 			<label class="onoffswitch-label" for="employment">
@@ -94,7 +94,6 @@
 {% endblock %}
 {% block body_script %}
 	<script>
-		$('#database').addClass('active');
 		{% for r in results %}
 			grades({{ r.training_id }});
 		{% endfor %}
