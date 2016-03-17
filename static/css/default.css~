@@ -884,7 +884,7 @@
 		right: 0px; 
 	}
 	.jobtoggle {
-		float: left; margin-left: 12px; padding-bottom: 2px;
+		float: left; margin-left: 12px;
 		position: relative; width: 160px;
 		-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 	}
