@@ -85,8 +85,8 @@
 					complete: function(data){
 						$(status).empty();
 						$(status).html('<font color="#007800">✔</font>');
-						//var category = document.getElementById("category").value;
-						//$.get(encodeURIComponent(category) + '/text/' + num);
+						var category = document.getElementById("category").value;
+						$.get(encodeURIComponent(category) + '/mail/' + num);
 					},
 					error: function(){
 						$(status).empty();

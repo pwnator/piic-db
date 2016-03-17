@@ -223,15 +223,23 @@ def history(request):
 		for col in zip(col_names, row):
 			rowset.append(col)
 		remarks.append(dict(rowset))
-	cursor.execute('SELECT plotter_message.*,plotter_participant.sname,plotter_participant.fname FROM plotter_message,plotter_participant WHERE plotter_message.participant_id=plotter_participant.ID ORDER BY datetime(timestamp) DESC LIMIT 15')
-	messages = []
+	cursor.execute('SELECT plotter_message.*,plotter_participant.sname,plotter_participant.fname FROM plotter_message,plotter_participant WHERE plotter_message.participant_id=plotter_participant.ID AND medium="text" ORDER BY datetime(timestamp) DESC LIMIT 15')
+	texts = []
 	col_names = [name[0] for name in cursor.description]
 	for row in cursor.fetchall():
 		rowset = []
 		for col in zip(col_names, row):
 			rowset.append(col)
-		messages.append(dict(rowset))
-	return render(request, 'plotter/history.html', {'remarks' : remarks, 'messages' : messages})
+		texts.append(dict(rowset))
+	cursor.execute('SELECT plotter_message.*,plotter_participant.sname,plotter_participant.fname FROM plotter_message,plotter_participant WHERE plotter_message.participant_id=plotter_participant.ID AND medium="mail" ORDER BY datetime(timestamp) DESC LIMIT 15')
+	mail = []
+	col_names = [name[0] for name in cursor.description]
+	for row in cursor.fetchall():
+		rowset = []
+		for col in zip(col_names, row):
+			rowset.append(col)
+		mail.append(dict(rowset))
+	return render(request, 'plotter/history.html', {'remarks' : remarks, 'texts' : texts, 'mail' : mail})
 
 @login_required
 def employed(request):
