@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Personalized e-mail page{% endblock %}
+{% block script_block %}
+	<script>
+		function lookup(x) {
+			var table = document.getElementById("t_results");
+			var y = encodeURIComponent(x);
+			$.ajax({
+				url: y,
+				data: y,
+				success: function(data) {
+					$("#t_results").empty();
+					$("#t_results").html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th style='text-align:center;vertical-align:middle;'><input type='checkbox' id='cbtoggle'></th><th>Sent</th>");
+					var index = 0;
+					var prevname;
+					data.forEach(function(obj) {
+						var row = document.createElement('tr');
+						var subject = document.getElementById("subject").value;
+						var message = encodeURIComponent(document.getElementById("msg").value);
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td><a href="../master/participant/' + obj.id +'">' + obj.sname + ', ' + obj.fname + '</a></td><td>' + obj.abbrev + '</td><td>' + obj.designation + '</td><td><a href="' + obj.id + '/' + subject + '/' + message + '">' + obj.email + '</a></td><td>' + obj.contactn + '</td><td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="cb" value="' + obj.contactn + '"></td><td id="' + obj.id + '" style="text-align:center;">-</td>';
+						table.appendChild(row);
+					});
+					table.innerHTML = table.innerHTML + '</br><button onclick="send()">Send to checked participants</button></br></br></br>';
+				}
+			});
+		}
+		function method() {
+			var method = $('input[name=method]').filter(':checked').val();
+			if (method == "training") {
+				var trainings = document.getElementById("select_training");
+				var training = trainings.options[trainings.selectedIndex].value;
+				var x = "SELECT plotter_participant.*,plotter_institution.abbrev FROM plotter_participant,plotter_institution,plotter_training_trainee WHERE participant_id=plotter_participant.ID AND instn_id=plotter_institution.ID AND training_id=" + training;
+				lookup(x);
+			}
+			else if (method =="graduate") {
+				var instns = document.getElementById("select_instn");
+				var instn = instns.options[instns.selectedIndex].value;
+				var graddates = document.getElementById("select_graddate");
+				var graddate = graddates.options[graddates.selectedIndex].value;
+				var x = "SELECT plotter_participant.*,plotter_institution.abbrev FROM plotter_participant,plotter_institution WHERE instn_id=plotter_institution.ID AND instn_id=" + instn + " AND graddate<=" + graddate+2;
+				lookup(x);
+			}
+			else if (method == "available") {
+				var x = "SELECT plotter_participant.*,plotter_institution.abbrev FROM plotter_participant,plotter_institution WHERE instn_id=plotter_institution.ID AND availability=1";
+				lookup(x);
+			}
+			else if (method == "sql") {
+				var x = document.getElementById("query").value.replace(/ /g,'-');
+				lookup(x);
+			}
+			else if (method == "addr") {
+				var x = "SELECT plotter_participant.*,plotter_institution.abbrev FROM plotter_participant,plotter_institution WHERE instn_id=plotter_institution.ID AND plotter_participant.email IN (" + document.getElementById("alist").value + ')';
+				x = x.replace(/ /g,'-');
+				lookup(x);
+			}
+			else {
+				$("#t_results").empty();
+				alert("Please select an input method from the radio buttons above the textboxes.");
+			}
+		}
+	</script>
+	<script>
+		$(document).ajaxComplete(function() {
+			$('#cbtoggle').click(function(){
+				$(".cb").prop('checked', $(this).prop('checked'));
+			});			
+		});
+		function send(){
+			$('.cb:checked').each(function() {
+				var num = $(this).val();
+				var link = $(this).parent().prev().prev().find('a').prop("href");
+				var status = $(this).parent().next();
+				$(status).empty();
+				$(status).html('<img src="{% static "images/loading.gif" %}" width="12" alt=""></img>')
+				$.ajax({
+					url: link,
+					dataType: 'text',
+					timeout: 5000,
+					async: true,
+					cache: false,
+					complete: function(data){
+						$(status).empty();
+						$(status).html('<font color="#007800">✔</font>');
+						//var category = document.getElementById("category").value;
+						//$.get(encodeURIComponent(category) + '/text/' + num);
+					},
+					error: function(){
+						$(status).empty();
+						$(status).html('<font color="780000">✘</font>');
+					}
+				});
+			});
+		}
+	</script>
+{% endblock %}
+{% block body_block %}
+	{% if restricted %}<p><b>Note: Only the staff may fully utilize the page. Some functions may be disabled for the sake of data confidentiality.</b></p>{% endif %}
+	<p>Enter a valid SQLite3 query (check the <a href="/test">SQLite3 query page</a> for more details):</br>Database query temporary until general filters are implemented.</br></br><b>Select an input method:</b></p>
+	<div><form class="mselect">
+		<div id="box3">
+			<input type="radio" name="method" value="training">Training participant list</br>
+			<select id="select_training" style="width:160px;">
+				<option selected="select" disabled>Select a training:</option>
+				{% for t in trainings %}
+				<option value="{{ t.pk }}" {% ifequal t.module training %}selected="selected"{% endifequal %}>{{ t.location }} {% widthratio t.date 10000 1 as syear %}{% widthratio syear 1 -10000 as srem1 %}{% with t.date|add:srem1 as srem2 %}{% widthratio srem2 100 1 as smonth %}{% widthratio smonth 1 -100 as srem3 %}{{ syear }}/{{ smonth }}/{{ srem2|add:srem3 }}{% endwith %} ({{ t.module.topic }})</option>
+				{% endfor %}
+			</select>
+			</br></br>
+		</div>
+		<div id="box3">
+			<input type="radio" name="method" value="graduate">Graduate list</br>
+			<select id="select_instn" style="width:180px;">
+				<option selected="select" disabled>Select an institution:</option>
+				{% for i in instns %}
+				<option value="{{ i.pk }}"{% ifequal i.abbrev institution %} selected="selected"{% endifequal %}>{{ i.abbrev }}</option>
+				{% endfor %}
+			</select>
+			</br></br>
+			<select id="select_graddate" style="width:170px;">
+				<option selected="select" disabled>Select a year:</option>
+				{% for g in graddates %}
+				{% if forloop.counter|divisibleby:2 %}
+				{% if g.graddate %}{% widthratio g.graddate 10 1 as year %}<option value="{{ year }}" {% ifequal year participant %}selected="selected"{% endifequal %}>{{ year }}{% endif %}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+			</br></br>
+		</div>
+		<div id="box3">
+			<input type="radio" name="method" value="available">Interview availability list</br>
+			</br></br></br></br>
+		</div>
+		<div id="box3">
+			<input type="radio" name="method" value="sql">SQLite3 query</br>
+			<textarea id="query" rows="5">SELECT plotter_participant.*,plotter_institution.abbrev FROM plotter_participant,plotter_institution WHERE plotter_participant.instn_id=plotter_institution.ID AND plotter_participant.designation LIKE "BS%" AND plotter_institution.abbrev="UPD"</textarea>
+			</br></br></br></br>
+		</div>
+		<div id="box3">
+			<input type="radio" name="method" value="addr">Address list</br>
+			<textarea id="alist" rows="5">Paste comma-separated, single quotemark-bound e-mail addresses here (whitespaces allowed)</textarea>
+			</br></br></br></br>
+		</div>
+	</form></div>
+	<p>Subject: <input type="text" id="subject" value="Insert subject here"></p>
+	<p>Nature of the message (Training, Resume, Internship, etc): <input type="text" id="category" value="Training"></p>
+	<p>Message template - use **name** (asterisks included) for the database to include the specific name into the template (please avoid using forward slashes "/"):</p><textarea id="msg" rows="3" cols="80">Hello, **name**.&#10;&#13;This is an automated message from PIIC to remind you that the training starts at 8:00.</textarea></br>
+	<button onclick="method()" class="button button-small">Submit</button>
+	</br></br>
+	<div id="g_results"><center><table id="t_results"></table></center></div>
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#utilities').addClass('active');
+	</script>
+{% endblock %}
