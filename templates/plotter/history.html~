@@ -28,8 +28,8 @@
 		<h3>E-mail history</h3></br>
 		<table>
 			<th>Name</th><th>Send date</th><th>Purpose/Code</th>
-			{% for m in messages %}
-			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ m.participant_id }}">{{ m.sname }}, {{ m.fname }}</a></td><td>{{ m.timestamp }}</td><td>{{ m.category }}</td></tr>
+			{% for e in mail %}
+			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ e.participant_id }}">{{ e.sname }}, {{ e.fname }}</a></td><td>{{ e.timestamp }}</td><td>{{ e.category }}</td></tr>
 			{% endfor %}
 		</table>
 	</div>
