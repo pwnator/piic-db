@@ -38,5 +38,6 @@ urlpatterns = [
 	url(r'^asms/(?P<category>[\w]+)/(?P<medium>[\w]+)/(?P<contactn>[0-9]+)/$', views.timestamp, name='timestamp'),
 	url(r'^mail/$', views.mail, name='mail'),
 	url(r'^mail/(?P<ppant_id>[0-9]+)/(?P<subject>[^/]+)/(?P<message>.([^/]+))/$', views.message, name='message'),
+	url(r'^mail/(?P<category>[\w]+)/(?P<medium>[\w]+)/(?P<contactn>[0-9]+)/$', views.timestamp, name='timestamp'),
 	url(r'^(?P<query>.*)/$', views.query, name='query'),
 ]
