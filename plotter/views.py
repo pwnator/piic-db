@@ -197,7 +197,7 @@ def message(request, ppant_id, subject, message):
 	connection = get_connection()
 	connection.open()
 	if "**name**" in message:
-		message = message.replace("**name**", p.fname + p.sname)
+		message = message.replace("**name**", p.fname + ' ' + p.sname)
 	email = EmailMessage(subject, message, 'joel@piic.org.ph', [p.email])
 	#email.content_subtype = 'html'
 	if 'attachment' in request.FILES:
