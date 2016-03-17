@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.core.mail import get_connection, EmailMessage
 from django.db import connection, models
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -11,6 +12,8 @@ from docx.shared import Pt
 from math import floor
 from plotter.models import *
 import binascii, datetime, hashlib, json, os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testplot.settings')
 
 def user_login(request):
 	context=RequestContext(request)
@@ -180,6 +183,28 @@ def asms(request):
 		return render(request, 'plotter/asms.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct(), 'restricted' : True})
 	else:
 		return render(request, 'plotter/asms.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct()})
+
+@login_required
+def mail(request):
+	if request.user.username == 'dost':
+		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct(), 'restricted' : True})
+	else:
+		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct()})
+
+@login_required
+def message(request, ppant_id, subject, message):
+	p = Participant.objects.get(pk=ppant_id)
+	connection = get_connection()
+	connection.open()
+	if "**name**" in message:
+		message = message.replace("**name**", p.fname + p.sname)
+	email = EmailMessage(subject, message, 'joel@piic.org.ph', [p.email])
+	#email.content_subtype = 'html'
+	if 'attachment' in request.FILES:
+		email.attach_file(request.FILES['attachment'])
+	email.send()
+	connection.close()
+	return HttpResponse()
 
 @login_required
 def timestamp(request, category, medium, contactn):
