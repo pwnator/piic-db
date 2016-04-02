@@ -11,11 +11,7 @@ from docx import Document
 from docx.shared import Pt
 from math import floor
 from plotter.models import *
-<<<<<<< HEAD
 import binascii, datetime, hashlib, json, os, requests
-=======
-import binascii, datetime, hashlib, json, os
->>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testplot.settings')
 
