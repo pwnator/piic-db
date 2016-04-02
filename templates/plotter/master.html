@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Master list{% endblock %}
+{% block script_block %}
+	<script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+	<script src="{% static "js/dataTables.buttons.min.js" %}"></script>
+	<script src="{% static "js/buttons.colVis.min.js" %}"></script>
+	<script src="{% static "js/dataTables.fixedColumns.min.js" %}"></script>
+	<script src="{% static "js/date.js" %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static "css/jquery.dataTables.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "css/buttons.dataTables.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "css/fixedColumns.dataTables.min.css" %}">
+	<style type="text/css">
+		div.dataTables_wrapper {
+			width: 1000px;
+			margin: 0 auto;
+		}
+		
+		div.DTFC_LeftBodyLiner {
+			overflow-x: hidden;
+		}
+		table.dataTable.no-footer {
+			border-bottom: 0px;
+		}
+		th, td {
+			white-space: nowrap;
+		}
+		tbody td {
+			height: 18px;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$.ajax({
+				url: 'modlist/1/',
+				success: function(data){
+					$("#t_master").empty();
+					$("#t_master").html("<thead><tr><th>Name</th><th>Institution</th><th>Designation</th><th>Graduation date</th><th>Interview availability</th><th>Employment status</th>{% for m in modules %}<th class='module'><a href='module/{{ m.ID }}' style='font-size:11px'>{{ m.topic }}</a></th>{% endfor %}<th>Email</th><th>Contact number</th><th>Last modified</th></tr></thead><tbody></tbody>");
+					var tbody = document.getElementById("t_master").getElementsByTagName("tbody")[0];
+					var index = 0;
+					var prevname;
+					data.forEach(function(obj) {
+						var date = 0;
+						var parsedate, availability, employment;
+						var name = obj.sname + ', ' + obj.fname;
+						if (obj.graddate) date = obj.graddate.toString();
+						if (obj.graddate) parsedate = date.substring(0,4) + ' ' + date.substring(4,5) + 'H';
+						else parsedate = "N/A";
+						if (obj.availability) availability = "Yes";
+						else availability = "No";
+						if (obj.employment) employment = "Yes";
+						else employment = "No";
+						var row = document.createElement('tr');
+						{% if restricted %}
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>**confidential**</td><td>**confidential**</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
+						{% else %}
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
+						{% endif %}
+						if (prevname != name){
+							tbody.appendChild(row);
+							modcell = document.getElementById('td_master_'+obj.mod_id+'_'+String(index));
+							modcell.innerHTML = '<center><a href="training/' + obj.training_id + '">★</a></center>';
+							index++;
+						}
+						else {
+							modcell = document.getElementById('td_master_'+obj.mod_id+'_'+String(index-1));
+							modcell.innerHTML = '<center><a href="training/' + obj.training_id + '">★</a></center>';
+						}
+						prevname = name;
+					});
+				}
+			});
+		});
+		$(document).ajaxSuccess(function() {
+			var table = $("#t_master").dataTable({
+				dom: 'Bfrtip',
+				buttons: [{
+					extend: 'colvis',
+					columns: ':not(:first-child)',
+					postfixButtons: ['colvisRestore']
+				}],
+				scrollY: 500,
+				scrollX: true,
+				scrollCollapse: true,
+				order: [[1,'asc']],
+				columnDefs: [{width: '400px', targets: [0]}],
+				fixedColumns: true,
+			});
+		});
+	</script>
+{% endblock %}
+{% block body_block %}
+	<div id="g_master"><table id="t_master" class="display stripe row-border order-column" cellspacing="0" width="100%"></table></div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : Undeviating 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20140322
+
+-->
+{% load staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{% block title %}Page{% endblock %} | Philippine Institute for Integrated Circuits</title>
+<link rel="shortcut icon" href="{% static "images/favicon.png" %}" type="image/png" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="{% static "css/default.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/fonts.css" %}">
+<script src="{% static "js/jquery-1.11.3.min.js" %}"></script>
+{% block script_block %}{% endblock %}
+</head>
+<body>
+<div id="header-wrapper">
+	<div id="header" class="container">
+		<div class="container"><div id="logo"><a href="http://web.piic.org.ph"><img src="{% static "images/logo.png" %}" width="300" alt="" ></img></a></div>
+		<div id="banner"><h1><a href="http://web.piic.org.ph">Philippine Institute for Integrated Circuits</a></h1></div></div>
+		<div id="menu">
+			<ul>
+				<li id="stats"><a href="../">Stats page</a></li>
+				<li id="database">
+					<a href="#">Database pages<span class="icon icon-chevron-down"></span></a>
+					<ul class="dropdown">
+						<li><a href="/admin">Administration page</a></li>
+						<li><a href="/master">Master list</a></li>
+						<li><a href="/master/training">Modules & trainings</a></li>
+						<li><a href="/master/participant">Institutions & trainees</a></li>
+					</ul>
+				</li>
+				<li id="utilities">
+					<a href="#">Additional utilities<span class="icon icon-chevron-down"></a>
+					<ul class="dropdown">
+						<li><a href="/history">Contact history page</a></li>
+						<li><a href="/employed">Employed list page</a></li>
+						<li><a href="/test">SQLite3 query page</a></li>
+						<li><a href="/asms">Automated SMS query page</a></li>
+						<li><a href="/mail">Personalized e-mail page</a></li>
+					</ul>
+				</li>
+				{% if user.is_authenticated %}
+				<li id="logout"><a href="/logout">Logout</a></li>
+				{% else %}
+				<li id="login"><a href="/login">Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="wrapper">
+	<div id="main" class="container">
+	{% block body_block %}{% endblock %}
+	</div>
+</div>
+<div id="footer">
+	<div class="container">
+		<div class="fbox1">
+		<span class="icon icon-map-marker"></span>
+			<span>Room 413 NEC Bldg., Juinio Hall
+			<br />University of the Philippines Diliman, Quezon City</span>
+		</div>
+		<div class="fbox1">
+			<span class="icon icon-phone"></span>
+			<span>(632) 981 8500 local 3051-3052</span>
+		</div>
+		<div class="fbox1">
+			<span class="icon icon-envelope-alt"></span>
+			<span>contactus@piic.org.ph</span>
+		</div>
+	</div>
+</div>
+<div id="copyright">
+	<p>&copy; 2015-2016. All rights reserved. | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+	<ul class="contact">
+		<li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
+		<li><a href="#" class="icon icon-facebook"><span></span></a></li>
+		<li><a href="#" class="icon icon-youtube"><span>Youtube</span></a></li>
+		<li><a href="http://www.beyondsecurity.com/vulnerability-scanner-verification/db.portal.piic.org.ph"><img src="https://seal.beyondsecurity.com/verification-images/db.portal.piic.org.ph/vulnerability-scanner-2.gif" alt="Website Security Test" border="0" /></a></li>
+	</ul>
+</div>
+{% block body_script %}{% endblock %}
+</body>
+</html>

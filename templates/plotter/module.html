@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Module page{% endblock %}
+{% block script_block %}
+	<script type="text/javascript" charset="utf-8">
+		{% if results.0 %}
+			document.title = "{{ results.0.topic }} v{{ results.0.version }} | Philippine Institute for Integrated Circuits";
+		{% endif %}
+		var monthtext=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		function trainings(mod_id){
+			$.ajax({
+				url: '../trainings/' + mod_id + '/',
+				data: mod_id,
+				success: function(data){
+					var table = document.getElementById("t_"+String(mod_id));
+					$("#t_"+String(mod_id)).empty();
+					$("#t_"+String(mod_id)).html("<th>Location</th><th>Date</th><th>Year</th><th>Participating institutions</th>");
+					var index = 0;
+					var prev;
+					data.forEach(function(obj) {
+						var date = obj.date.toString();
+						var curr = obj.training_id;
+						var row = document.createElement('tr');
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td>' + obj.location + '</a></td><td><a href="../../training/' + obj.training_id + '">' + date.substring(0,4) + '/' + date.substring(4,6) + '/' + date.substring(6) + '</a></td><td>' + obj.year + '</td><td id="td_' + String(mod_id) + '_' + String(index) + '"><a href="../../institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td>';
+						if (prev != curr){
+							table.appendChild(row);
+							index++;
+						}
+						else {
+							modcell = document.getElementById("td_"+String(mod_id)+"_"+String(index-1));
+							modcell.innerHTML = modcell.innerHTML + ', <a href="../../institution/' + obj.instn_id + '">' + obj.abbrev + '</a>';
+						}
+						prev = curr;
+					});
+				}
+			});
+		};
+	</script>
+{% endblock %}
+{% block body_block %}
+	<p><b>General information</b></p>
+	{% if results %}
+		<p>Topic: {{ results.0.topic }}</p>
+		<p>Full name: {{ results.0.fullname }}</p>
+		<p>Version: {{ results.0.version }}</p>
+		<p>{% if results.0.moddate %}Date modified: {{ results.0.moddate }}{% endif %}</p>
+		<p>{% if results.0.description %}Description: {{ results.0.description }}{% endif %}</p>
+		<p>{% if results.0.topics %}Topics: {{ results.0.topics }}{% endif %}</p>
+		<p>{% if results.0.remarks %}Remarks: {{ results.0.remarks }}{% endif %}</p>
+		<p>{% if results.0.abbrev %}Institutions trained: {% for r in results %}<a href="../../institution/{{ r.instn_id }}">{{ r.abbrev }}</a> {% endfor %}{% endif %}</p>
+		<div id="g_{{ results.0.id }}"><p><b>Trainings</b></p><center><table id="t_{{ results.0.id }}"></table></center></div>
+	{% endif %}
+{% endblock %}
+{% block body_script %}
+	<script>
+		$('#database').addClass('active');
+		{% if results.0.id %}
+			trainings({{ results.0.id }});
+		{% endif %}
+	</script>
+{% endblock %}

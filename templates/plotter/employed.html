@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Employed list{% endblock %}
+{% block script_block %}
+	<script type="text/javascript" charset="utf-8">
+		$(document).on('change', 'input[type="checkbox"]', function(){
+			$("#all").toggle();
+			$("#micro").toggle();
+		});
+	</script>
+{% endblock %}
+{% block body_block %}
+	<div style="float:left; margin-top:2px;"><h3>List of employed participants in </h3></div>
+	<div class="jobtoggle">
+		<input type="checkbox" name="jobtoggle" class="jobtoggle-checkbox" id="employment">
+		<label class="jobtoggle-label" for="employment">
+			<span class="jobtoggle-inner"></span>
+			<span class="jobtoggle-switch"></span>
+		</label>
+	</div>
+	</br></br>
+	<table id="all">
+		<th></th><th>Name</th><th>Institution</th><th>Course</th><th>Employment details</th><th>Remarks</th><th>Timestamp</th>
+		{% for p in participants %}
+		<tr class="{% if forloop.counter|divisibleby:2 %}alt{% endif %}"><td>{{ forloop.counter }}</td><td><a href="../master/participant/{{ p.pk }}">{{ p.sname }}, {{ p.fname }}</a></td><td>{{ p.designation }}</td><td><a href="../master/institution/{{ p.instn_id }}">{{ p.instn }}</a></td><td>{% if restricted %}**confidential**{% else %}{{ p.workdetails }}{% endif %}</td><td>{% if restricted %}**confidential**{% else %}{{ p.remarks }}{% endif %}</td><td>{{ p.modified }}</td></tr>
+		{% endfor %}
+	</table>
+	<table id="micro">
+		<th></th><th>Name</th><th>Institution</th><th>Course</th><th>Employment details</th><th>Remarks</th><th>Timestamp</th>
+		{% for p in micro %}
+		<tr class="{% if forloop.counter|divisibleby:2 %}alt{% endif %}"><td>{{ forloop.counter }}</td><td><a href="../master/participant/{{ p.pk }}">{{ p.sname }}, {{ p.fname }}</a></td><td>{{ p.designation }}</td><td><a href="../master/institution/{{ p.instn_id }}">{{ p.instn }}</a></td><td>{% if restricted %}**confidential**{% else %}{{ p.workdetails }}{% endif %}</td><td>{% if restricted %}**confidential**{% else %}{{ p.remarks }}{% endif %}</td><td>{{ p.modified }}</td></tr>
+		{% endfor %}
+	</table>
+{% endblock %}
+{% block body_script %}
+	<script>
+		$("#micro").hide();
+	</script>
+{% endblock %}

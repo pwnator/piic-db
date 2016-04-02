@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% extends 'plotter/core.html' %}
+{% load staticfiles %}
+{% block title %}Login{% endblock %}
+{% block body_block %}
+	<center>
+		{% if required %}
+		<p><b>You must be logged in to use the database utilities.</b></p>
+		{% endif %}
+		{% if invalid %}
+		<p><b>Invalid login details.</b></p>
+		{% endif %}
+		{% if user.is_authenticated %}
+		<p><b>You are already logged in.</b></p>
+		{% else %}
+		<form id="login_form" method="post" action="/login/">
+			{% csrf_token %}
+			Username: <input type="text" name="username" value="" size="15" /></br></br>
+			Password: <input type="password" name="password" value="" size="25" autocomplete="off"/></br></br>
+			<input type="submit" value="submit" />
+		</form>
+		{% endif %}
+	</center>
+{% endblock %}
