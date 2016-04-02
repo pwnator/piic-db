@@ -20,10 +20,19 @@
 						var name = obj.fname + ' ' + obj.sname
 						var row = document.createElement('tr');
 						var ip = document.getElementById("ip").value;
+<<<<<<< HEAD
 						var message = encodeURIComponent(document.getElementById("msg").value);
 						if (index%2) row.className = 'alt';
 						//row.innerHTML = '<td><a href="../master/participant/' + obj.id +'">' + name + '</a></td><td>' + obj.abbrev + '</td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td><a href="http://' + ip + '/sendsms?phone=0' + obj.contactn +'&text=' + message + '">0' + obj.contactn + '</a></td><td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="cb" value="' + obj.contactn + '"></td><td id="' + obj.id + '" style="text-align:center;">-</td>';
 						row.innerHTML = '<td><a href="../master/participant/' + obj.id +'">' + obj.sname + ', ' + obj.fname + '</a></td><td>' + obj.abbrev + '</td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td><a href="' + obj.id + '/' + ip + '/' + message + '">' + obj.contactn + '</a></td><td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="cb" value="' + obj.contactn + '"></td><td id="' + obj.id + '" style="text-align:center;">-</td>';
+=======
+						var msg = document.getElementById("msg").value.split("**name**");
+						var message;
+						if (msg[1] === undefined) message = encodeURIComponent(msg[0]);
+						else message = encodeURIComponent(msg[0]) + encodeURIComponent(name) + encodeURIComponent(msg[1]);
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td><a href="../master/participant/' + obj.id +'">' + name + '</a></td><td>' + obj.abbrev + '</td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td><a href="http://' + ip + '/sendsms?phone=0' + obj.contactn +'&text=' + message + '">0' + obj.contactn + '</a></td><td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="cb" value="' + obj.contactn + '"></td><td id="' + obj.id + '" style="text-align:center;">-</td>';
+>>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 						table.appendChild(row);
 					});
 					table.innerHTML = table.innerHTML + '</br><button onclick="send()">Send to checked participants</button></br></br></br>';
@@ -86,6 +95,7 @@
 					cache: false,
 					complete: function(data){
 						$(status).empty();
+<<<<<<< HEAD
 						console.log(data);
 						console.log(data.responseText);
 						if ($(data).text() != 'error') {
@@ -94,6 +104,11 @@
 							$.get(encodeURIComponent(category) + '/text/' + num);
 						}
 						else $(status).html('<font color="780000">✘</font>');
+=======
+						$(status).html('<font color="#007800">✔</font>');
+						var category = document.getElementById("category").value;
+						$.get(encodeURIComponent(category) + '/text/' + num);
+>>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 					},
 					error: function(){
 						$(status).empty();

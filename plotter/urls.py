@@ -35,7 +35,10 @@ urlpatterns = [
 	url(r'^master/training/members/(?P<training_id>[0-9]+)/$', views.training_related, name='training_related'),
 	url(r'^test/$', views.test, name='test'),
 	url(r'^asms/$', views.asms, name='asms'),
+<<<<<<< HEAD
 	url(r'^asms/(?P<ppant_id>[0-9]+)/(?P<ip>[^/]+)/(?P<message>.([^/]+))/$', views.text, name='text'),
+=======
+>>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 	url(r'^asms/(?P<category>[\w]+)/(?P<medium>[\w]+)/(?P<contactn>[0-9]+)/$', views.timestamp, name='timestamp'),
 	url(r'^mail/$', views.mail, name='mail'),
 	url(r'^mail/(?P<ppant_id>[0-9]+)/(?P<subject>[^/]+)/(?P<message>.([^/]+))/$', views.message, name='message'),
