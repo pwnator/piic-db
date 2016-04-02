@@ -18,7 +18,7 @@
 					$("#t_"+String(mod_id)).empty();
 					$("#t_"+String(mod_id)).html("<th>Location</th><th>Date</th><th>Year</th><th>Participating institutions</th>");
 					var index = 0;
-					var prevdate;
+					var prev;
 					data.forEach(function(obj) {
 						var date = obj.date.toString();
 						var curr = obj.training_id;

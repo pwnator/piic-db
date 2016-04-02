@@ -189,7 +189,6 @@ def asms(request):
 		return render(request, 'plotter/asms.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct()})
 
 @login_required
-<<<<<<< HEAD
 def text(request, ppant_id, ip, message):
 	p = Participant.objects.get(pk=ppant_id)
 	if "**name**" in message:
@@ -201,8 +200,6 @@ def text(request, ppant_id, ip, message):
 	return HttpResponse(status=r.status_code)
 
 @login_required
-=======
->>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 def mail(request):
 	if request.user.username == 'dost':
 		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct(), 'restricted' : True})

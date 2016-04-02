@@ -17,12 +17,22 @@
 					var index = 0;
 					var prev;
 					data.forEach(function(obj) {
-						var date = obj.date.toString()
-						var curr = obj.training_id				
+						var date = obj.date.toString();
+						var curr = obj.training_id;				
 						var row = document.createElement('tr');
 						if (index%2) row.className = 'alt';
 						row.innerHTML = '<td>' + obj.location + '</a></td><td><a href="' + obj.training_id + '">' + date.substring(0,4) + '/' + date.substring(4,6) + '/' + date.substring(6) + '</a></td><td>' + obj.year + '</td><td id="td_' + String(mod_id) + '_' + String(index) + '"><a href="../institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td>';
 						if (prev != curr){
+=======
+					var prevdate;
+					data.forEach(function(obj) {
+						var date = obj.date.toString()
+						var curr = obj.date;				
+						var row = document.createElement('tr');
+						if (index%2) row.className = 'alt';
+						row.innerHTML = '<td>' + obj.location + '</a></td><td><a href="' + obj.training_id + '">' + date.substring(0,4) + '/' + date.substring(4,6) + '/' + date.substring(6) + '</a></td><td>' + obj.year + '</td><td id="td_' + String(mod_id) + '_' + String(index) + '"><a href="../institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td>';
+						if (prevdate != curr){
+>>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 							table.appendChild(row);
 							index++;
 						}
@@ -30,7 +40,11 @@
 							modcell = document.getElementById("td_"+String(mod_id)+"_"+String(index-1));
 							modcell.innerHTML = modcell.innerHTML + ', <a href="../institution/' + obj.instn_id + '">' + obj.abbrev + '</a>';
 						}
+<<<<<<< HEAD
 						prev = curr;
+=======
+						prevdate = curr;
+>>>>>>> d94392c9f15d944914437939a1f7d2f79a7ef806
 					});
 				}
 			});
