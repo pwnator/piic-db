@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '06*bs&49@*^wtqwqa@2bia^om37wpiz#!u=3knjl&4mdg%a723'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['db.portal.piic.org.ph','10.10.25.176','localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -119,6 +119,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = False
 EMAIL_USE_TLS = False
 EMAIL_HOST = 'mail.piic.org.ph'

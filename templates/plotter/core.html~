@@ -87,7 +87,6 @@ Released   : 20140322
 		<li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
 		<li><a href="#" class="icon icon-facebook"><span></span></a></li>
 		<li><a href="#" class="icon icon-youtube"><span>Youtube</span></a></li>
-		<li><a href="http://www.beyondsecurity.com/vulnerability-scanner-verification/db.portal.piic.org.ph"><img src="https://seal.beyondsecurity.com/verification-images/db.portal.piic.org.ph/vulnerability-scanner-2.gif" alt="Website Security Test" border="0" /></a></li>
 	</ul>
 </div>
 {% block body_script %}{% endblock %}

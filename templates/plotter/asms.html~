@@ -85,7 +85,6 @@
 					cache: false,
 					complete: function(data){
 						$(status).empty();
-<<<<<<< HEAD
 						if (data.responseText != 'error') {
 							$(status).html('<font color="#007800">✔</font>');
 							var category = document.getElementById("category").value;

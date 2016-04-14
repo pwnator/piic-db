@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.staticfiles.templatetags.staticfiles import static
-from django.core.mail import get_connection, EmailMessage
+from django.core.mail import get_connection, EmailMessage, send_mail
 from django.db import connection, models
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
+from django import forms
 from docx import Document
 from docx.shared import Pt
 from math import floor
@@ -14,6 +15,9 @@ from plotter.models import *
 import binascii, datetime, hashlib, json, os, requests
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testplot.settings')
+
+class SimpleFileForm(forms.Form):
+	template = forms.Field(widget=forms.FileInput, required=False)
 
 def user_login(request):
 	context=RequestContext(request)
@@ -193,29 +197,51 @@ def text(request, ppant_id, ip, message):
 		r = requests.get('http://' + ip + '/sendsms?phone=0' + str(p.contactn) + '&text=' + message)
 	except requests.exceptions.ConnectionError:
 		return HttpResponse('error')
-	return HttpResponse(status=r.status_code)
+	return HttpResponse('sent')
+
+@login_required
+def upload(request):
+	if request.method == 'POST':
+		if 'template' in request.FILES:
+			template = request.FILES['template']
+			filetype = template.content_type
+			if filetype != 'text/html':
+				return HttpResponse('File extension not allowed.')
+			else:
+				dest = open('media/template.html', 'wb+')
+				s = b''
+				for chunk in template.chunks():
+					dest.write(chunk)
+					s += chunk
+				dest.close()
+				return HttpResponse(s)
+	else:
+		return HttpResponse('No file uploaded.')
 
 @login_required
 def mail(request):
 	if request.user.username == 'dost':
 		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct(), 'restricted' : True})
 	else:
-		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct()})
+		form = SimpleFileForm()
+		return render(request, 'plotter/mail.html', {'trainings' : Training.objects.order_by('-date'), 'instns': Institution.objects.order_by('abbrev'), 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct(), 'form' : form})
 
 @login_required
-def message(request, ppant_id, subject, message):
+def message(request, ppant_id, html, subject, message):
 	p = Participant.objects.get(pk=ppant_id)
 	connection = get_connection()
 	connection.open()
+	if html == '1':
+		msg = open('media/template.html','r')
+		message = msg.read()
+		msg.close()
 	if "**name**" in message:
 		message = message.replace("**name**", p.fname + ' ' + p.sname)
-	email = EmailMessage(subject, message, 'joel@piic.org.ph', [p.email])
-	#email.content_subtype = 'html'
-	if 'attachment' in request.FILES:
-		email.attach_file(request.FILES['attachment'])
+	email = EmailMessage(subject, message, 'contactus@piic.org.ph', [p.email])
+	email.content_subtype = 'html'
 	email.send()
 	connection.close()
-	return HttpResponse()
+	return HttpResponse('sent')
 
 @login_required
 def timestamp(request, category, medium, contactn):
@@ -276,7 +302,7 @@ def encrypt(code):
 def certificate(request, training_id, ppant_id):
 	t = Training.objects.get(pk=training_id)
 	p = Participant.objects.get(pk=ppant_id)
-	document = Document('static/cert/template.docx')
+	document = Document('media/template.docx')
 	for paragraph in document.paragraphs:
 		for run in paragraph.runs:
 			if '<<name>>' in run.text:
@@ -296,10 +322,10 @@ def certificate(request, training_id, ppant_id):
 				serial = encrypt(code)
 				run.text = 'Serial: ' + serial
 			if '<<verification>>' in run.text: run.text = 'The authenticity of this certificate can be verified at\nhttp://db.portal.piic.org.ph/verif/' + serial + '/'
-	document.save('static/cert/'+serial+'.docx')
-	os.system('libreoffice --headless --convert-to pdf static/cert/'+serial+'.docx')
+	document.save('media/'+serial+'.docx')
+	os.system('libreoffice --headless --convert-to pdf media/'+serial+'.docx')
 	os.system('mv '+serial+'.pdf static/cert/'+serial+'.pdf')
-	os.system('rm static/cert/'+serial+'.docx')
+	os.system('rm media/'+serial+'.docx')
 	Message.objects.create(participant=p,category=serial,medium='cert')
 	url = static('cert/'+serial+'.pdf')
 	return HttpResponseRedirect(url)

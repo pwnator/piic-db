@@ -85,7 +85,7 @@
 					cache: false,
 					complete: function(data){
 						$(status).empty();
-						if (data.responseText != 'error') {
+						if (data.responseText == 'sent') {
 							$(status).html('<font color="#007800">✔</font>');
 							var category = document.getElementById("category").value;
 							$.get(encodeURIComponent(category) + '/text/' + num);

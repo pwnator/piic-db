@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--[if !mso]><!--><meta http-equiv="X-UA-Compatible" content="IE=edge" /><!--<![endif]-->
+    <meta name="viewport" content="width=device-width" />
+    <title> </title>
+    <style type="text/css">
+.wrapper a:hover {
+  text-decoration: none !important;
+}
+.btn a:hover,
+.footer__links a:hover {
+  opacity: 0.8;
+}
+.wrapper .footer__share-button:hover {
+  color: #ffffff !important;
+  opacity: 0.8;
+}
+a[x-apple-data-detectors] {
+  color: inherit !important;
+  text-decoration: none !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+.column {
+  padding: 0;
+  text-align: left;
+  vertical-align: top;
+}
+.mso .font-avenir,
+.mso .font-cabin,
+.mso .font-open-sans,
+.mso .font-ubuntu {
+  font-family: sans-serif !important;
+}
+.mso .font-bitter,
+.mso .font-merriweather,
+.mso .font-pt-serif {
+  font-family: Georgia, serif !important;
+}
+.mso .font-lato,
+.mso .font-roboto {
+  font-family: Tahoma, sans-serif !important;
+}
+.mso .font-pt-sans {
+  font-family: "Trebuchet MS", sans-serif !important;
+}
+.mso .footer p {
+  margin: 0;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .fblike {
+    background-image: url(https://i7.createsend1.com/static/eb/master/13-the-blueprint-3/images/fblike@2x.png) !important;
+  }
+  .tweet {
+    background-image: url(https://i8.createsend1.com/static/eb/master/13-the-blueprint-3/images/tweet@2x.png) !important;
+  }
+  .linkedinshare {
+    background-image: url(https://i9.createsend1.com/static/eb/master/13-the-blueprint-3/images/lishare@2x.png) !important;
+  }
+  .forwardtoafriend {
+    background-image: url(https://i3.createsend1.com/static/eb/master/13-the-blueprint-3/images/forward@2x.png) !important;
+  }
+}
+@media only screen and (max-width: 620px) {
+  .wrapper .size-18,
+  .wrapper .size-20 {
+    font-size: 17px !important;
+    line-height: 26px !important;
+  }
+  .wrapper .size-22 {
+    font-size: 18px !important;
+    line-height: 26px !important;
+  }
+  .wrapper .size-24 {
+    font-size: 20px !important;
+    line-height: 28px !important;
+  }
+  .wrapper .size-26 {
+    font-size: 22px !important;
+    line-height: 31px !important;
+  }
+  .wrapper .size-28 {
+    font-size: 24px !important;
+    line-height: 32px !important;
+  }
+  .wrapper .size-30 {
+    font-size: 26px !important;
+    line-height: 34px !important;
+  }
+  .wrapper .size-32 {
+    font-size: 28px !important;
+    line-height: 36px !important;
+  }
+  .wrapper .size-34,
+  .wrapper .size-36 {
+    font-size: 30px !important;
+    line-height: 38px !important;
+  }
+  .wrapper .size-40 {
+    font-size: 32px !important;
+    line-height: 40px !important;
+  }
+  .wrapper .size-44 {
+    font-size: 34px !important;
+    line-height: 43px !important;
+  }
+  .wrapper .size-48 {
+    font-size: 36px !important;
+    line-height: 43px !important;
+  }
+  .wrapper .size-56 {
+    font-size: 40px !important;
+    line-height: 47px !important;
+  }
+  .wrapper .size-64 {
+    font-size: 44px !important;
+    line-height: 50px !important;
+  }
+  .divider {
+    Margin-left: auto !important;
+    Margin-right: auto !important;
+  }
+  .btn a {
+    display: block !important;
+    font-size: 14px !important;
+    line-height: 24px !important;
+    padding: 12px 10px !important;
+    width: auto !important;
+  }
+  .btn--shadow a {
+    padding: 12px 10px 13px 10px !important;
+  }
+  .image img {
+    height: auto;
+    width: 100%;
+  }
+  .layout,
+  .column,
+  .preheader__webversion,
+  .header td,
+  .footer,
+  .footer__left,
+  .footer__right,
+  .footer__inner {
+    width: 320px !important;
+  }
+  .preheader__snippet,
+  .layout__edges {
+    display: none !important;
+  }
+  .preheader__webversion {
+    text-align: center !important;
+  }
+  .header__logo {
+    Margin-left: 20px;
+    Margin-right: 20px;
+  }
+  .layout--full-width {
+    width: 100% !important;
+  }
+  .layout--full-width tbody,
+  .layout--full-width tr {
+    display: table;
+    Margin-left: auto;
+    Margin-right: auto;
+    width: 320px;
+  }
+  .column,
+  .layout__gutter,
+  .footer__left,
+  .footer__right {
+    display: block;
+    Float: left;
+  }
+  .footer__inner {
+    text-align: center;
+  }
+  .footer__links {
+    Float: none;
+    Margin-left: auto;
+    Margin-right: auto;
+  }
+  .footer__right p,
+  .footer__share-button {
+    display: inline-block;
+  }
+  .layout__gutter {
+    font-size: 20px;
+    line-height: 20px;
+  }
+  .layout--no-gutter.layout--has-border:not(.layout--full-width),
+  .layout--has-gutter.layout--has-border .column__background {
+    width: 322px !important;
+  }
+  .layout--has-gutter.layout--has-border {
+    left: -1px;
+    position: relative;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .border {
+    display: none;
+  }
+  .layout--no-gutter.layout--has-border:not(.layout--full-width),
+  .layout--has-gutter.layout--has-border .column__background {
+    width: 320px !important;
+  }
+  .layout--has-gutter.layout--has-border {
+    left: 0 !important;
+  }
+}
+</style>
+    
+  <!--[if !mso]><!--><style type="text/css">
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic);
+</style><link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic" rel="stylesheet" type="text/css" /><!--<![endif]--><style type="text/css">
+body,.wrapper{background-color:#171e24}.wrapper h1{color:#80bfc4;font-size:26px;line-height:34px}.wrapper h2{color:#80bfc4;font-size:20px;line-height:28px}.wrapper h3{color:#80bfc4;font-size:16px;line-height:24px}.wrapper a{color:#c5dee0}.wrapper a:hover{color:#83b8bc !important}@media only screen and (max-width: 620px){.wrapper h1{}.wrapper h1{font-size:22px;line-height:31px}.wrapper h2{}.wrapper h2{font-size:17px;line-height:26px}.wrapper h3{}.wrapper p{}}.column,.column__background td{color:#e0dce0;font-size:14px;line-height:21px}.column,.column__background td{font-family:Ubuntu,sans-serif}.mso .column,.mso .column__background td{font-family:sans-serif !important}.border{background-color:#000}.layout--no-gutter.layout--has-border:not(.layout--full-width),.layout--has-gutter.layout--has-border .column__background,.layout--full-width.layout--has-border{border-top:1px solid 
+#000;border-bottom:1px solid #000}.wrapper blockquote{border-left:4px solid #000}.divider{background-color:#000}.wrapper .btn a{color:#171e24}.wrapper .btn a{font-family:Ubuntu,sans-serif}.mso .wrapper .btn a{font-family:sans-serif !important}.wrapper .btn a:hover{color:#171e24 !important}.btn--flat a,.btn--shadow a,.btn--depth a{background-color:#80bfc4}.btn--ghost a{border:1px solid #80bfc4}.preheader--inline,.footer__left{color:#fff}.preheader--inline,.footer__left{font-family:Ubuntu,sans-serif}.mso .preheader--inline,.mso .footer__left{font-family:sans-serif !important}.wrapper .preheader--inline a,.wrapper .footer__left a{color:#fff}.wrapper .preheader--inline a:hover,.wrapper .footer__left a:hover{color:#fff !important}.header__logo{color:#41637e}.header__logo{font-family:Avenir,sans-serif}.mso .header__logo{font-family:sans-serif !important}.wrapper .header__logo 
+a{color:#41637e}.wrapper .header__logo a:hover{color:#7096b5 !important}.footer__share-button{background-color:#0c0f12}.footer__share-button{font-family:Ubuntu,sans-serif}.mso .footer__share-button{font-family:sans-serif !important}.layout__separator--inline{font-size:20px;line-height:20px;mso-line-height-rule:exactly}
+</style><meta name="robots" content="noindex,nofollow" />
+<meta property="og:title" content="My First Campaign" />
+</head>
+<!--[if mso]>
+  <body class="mso">
+<![endif]-->
+<!--[if !mso]><!-->
+  <body class="full-padding" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #171e24;">
+<!--<![endif]-->
+    <div class="wrapper" style="background-color: #171e24;">
+      <table style="border-collapse: collapse;table-layout: fixed;color: #fff;font-family: Ubuntu,sans-serif;" align="center">
+        <tbody><tr>
+          <td class="preheader__snippet" style="padding: 10px 0 5px 0;vertical-align: top;width: 280px;">
+            
+          </td>
+          <td class="preheader__webversion" style="text-align: right;padding: 10px 0 5px 0;vertical-align: top;width: 280px;">
+            
+          </td>
+        </tr>
+      </tbody></table>
+      <table class="header" style="border-collapse: collapse;table-layout: fixed;Margin-left: auto;Margin-right: auto;" align="center">
+        <tbody><tr>
+          <td style="padding: 0;width: 560px;">
+            <div class="header__logo emb-logo-margin-box" style="font-size: 26px;line-height: 32px;Margin-top: 6px;Margin-bottom: 20px;color: #41637e;font-family: Avenir,sans-serif;">
+              <div class="logo-center" style="font-size:0px !important;line-height:0 !important;" align="center" id="emb-email-header"><img style="height: auto;width: 100%;border: 0;max-width: 100px;" src="http://piic.org.ph/mailer/piic_redlogo.png" alt="" width="100" height="51" /></div>
+            </div>
+          </td>
+        </tr>
+      </tbody></table>
+      <table class="layout layout--no-gutter" style="border-collapse: collapse;table-layout: fixed;Margin-left: auto;Margin-right: auto;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #212a32;" align="center">
+        <tbody><tr>
+          <td class="column" style="padding: 0;text-align: left;vertical-align: top;color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;width: 600px;">
+    
+            <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 24px;">
+      <div style="line-height:14px;font-size:1px">&nbsp;</div>
+    </div>
+    
+            <div style="Margin-left: 20px;Margin-right: 20px;Margin-bottom: 24px;">
+      <h1 class="size-36" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #80bfc4;font-size: 36px;line-height: 43px;text-align: center;"><strong>Analog Integrated Circuits Layout Design</strong></h1><p class="size-18" style="Margin-top: 20px;Margin-bottom: 0;font-size: 18px;line-height: 26px;text-align: center;">Want to learn more about the physical design of integrated circuits? Join our PIIC training course this summer season for FREE!&nbsp;</p>
+    </div>
+    
+          </td>
+        </tr>
+      </tbody></table>
+  
+      <div style="font-size: 20px;line-height: 20px;mso-line-height-rule: exactly;">&nbsp;</div>
+    
+      <table class="layout layout--has-gutter" style="border-collapse: collapse;table-layout: fixed;Margin-left: auto;Margin-right: auto;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;" align="center">
+        <tbody><tr>
+          <td class="column" style="padding: 0;text-align: left;vertical-align: top;color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;width: 290px;">
+            <table class="column__background" style="border-collapse: collapse;table-layout: fixed;width: 100%;background-color: #212a32;"><tbody><tr><td style="color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;padding: 0;">
+    
+        <div class="image" style="font-size: 12px;font-style: normal;font-weight: 400;" align="center">
+          <img class="gnd-corner-image gnd-corner-image-center gnd-corner-image-top" style="display: block;border: 0;max-width: 480px;" src="http://piic.org.ph/mailer/IMG_45871.JPG" alt="" width="290" height="193" />
+        </div>
+      
+              <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;Margin-bottom: 24px;">
+      
+<h1 class="size-30" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #80bfc4;font-size: 30px;line-height: 38px;font-family: ubuntu,sans-serif;"><span class="font-ubuntu">Course Outline</span></h1><p style="Margin-top: 20px;Margin-bottom: 0;">Actual devices in integrated circuits are made&nbsp;up&nbsp;of&nbsp;layers&nbsp;with&nbsp;different electrical&nbsp;properties.&nbsp;Once&nbsp;the&nbsp;devices&nbsp;of a circuit are properly sized to meet the target specifications, their physical representation&nbsp;must first be realized geometrically before it can be&nbsp;made into an actual integrated circuit. This process is called layout.</p><p style="Margin-top: 20px;Margin-bottom: 0;">The following topics are included in this 2-week course:</p><ul style="Margin-top: 20px;Margin-bottom: 0;Margin-left: 24px;padding: 0;list-style-type: disc;"><li style="Margin-top: 
+20px;Margin-bottom: 0;">EDA tools for layout design</li><li style="Margin-top: 0;Margin-bottom: 0;">Resistors, capacitors and inductors</li><li style="Margin-top: 0;Margin-bottom: 0;">Bipolar transistors, MOS transistor and logic gates</li><li style="Margin-top: 0;Margin-bottom: 0;">Design techniques and best practices for layout design</li><li style="Margin-top: 0;Margin-bottom: 0;">Euler&#8217;s Path and Stick Diagram</li><li style="Margin-top: 0;Margin-bottom: 0;">Device placement and routing</li><li style="Margin-top: 0;Margin-bottom: 0;">&nbsp;Circuit design and analog block layout design</li><li style="Margin-top: 0;Margin-bottom: 0;">Layout verification and debugging</li></ul>
+    </div>
+    
+            </td></tr></tbody></table>
+          </td>
+          <td class="layout__gutter" style="padding: 0;width: 20px;">&nbsp;</td>
+          <td class="column" style="padding: 0;text-align: left;vertical-align: top;color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;width: 290px;">
+            <table class="column__background" style="border-collapse: collapse;table-layout: fixed;width: 100%;background-color: #212a32;"><tbody><tr><td style="color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;padding: 0;">
+    
+        <div class="image" style="font-size: 12px;font-style: normal;font-weight: 400;" align="center">
+          <img class="gnd-corner-image gnd-corner-image-center gnd-corner-image-top" style="display: block;border: 0;max-width: 480px;" src="http://piic.org.ph/mailer/IMG_6452.JPG" alt="" width="290" height="193" />
+        </div>
+      
+              <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;Margin-bottom: 24px;">
+      
+<h1 class="size-28" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #80bfc4;font-size: 28px;line-height: 36px;">Learning Outcomes</h1><p class="size-14" style="Margin-top: 20px;Margin-bottom: 0;font-size: 14px;line-height: 21px;">After taking this course, you should&nbsp;be able to:</p><ul style="Margin-top: 20px;Margin-bottom: 0;Margin-left: 24px;padding: 0;list-style-type: disc;"><li class="size-14" style="Margin-top: 20px;Margin-bottom: 0;font-size: 14px;line-height: 21px;">Explain the importance of Analog IC Layout Design</li><li class="size-14" style="Margin-top: 0;Margin-bottom: 0;font-size: 14px;line-height: 21px;">Use an industry standard layout tool, as well as identify and&nbsp;layout various circuit components and devices</li><li class="size-14" style="Margin-top: 0;Margin-bottom: 0;font-size: 14px;line-height: 21px;">Understand Euler's 
+Path and stick diagrams</li><li class="size-14" style="Margin-top: 0;Margin-bottom: 0;font-size: 14px;line-height: 21px;">Explain the importance of different verification processes, DRC, LVC, ERC, and Antenna</li><li class="size-14" style="Margin-top: 0;Margin-bottom: 0;font-size: 14px;line-height: 21px;">Provide clean data using layout verification and debugging&nbsp;</li></ul>
+    </div>
+    
+            </td></tr></tbody></table>
+          </td>
+        </tr>
+      </tbody></table>
+  
+      <div style="font-size: 20px;line-height: 20px;mso-line-height-rule: exactly;">&nbsp;</div>
+    
+      <table class="layout layout--no-gutter" style="border-collapse: collapse;table-layout: fixed;Margin-left: auto;Margin-right: auto;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #212a32;" align="center">
+        <tbody><tr>
+          <td class="column" style="padding: 0;text-align: left;vertical-align: top;color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;width: 600px;">
+    
+        <div class="image" style="font-size: 12px;font-style: normal;font-weight: 400;" align="center">
+          <img class="gnd-corner-image gnd-corner-image-center gnd-corner-image-top" style="display: block;border: 0;max-width: 900px;" src="http://piic.org.ph/mailer/IMG_3376.JPG" alt="" width="600" height="400" />
+        </div>
+      
+            <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;Margin-bottom: 24px;">
+      <h1 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #80bfc4;font-size: 26px;line-height: 34px;">Recommended Background</h1><p style="Margin-top: 20px;Margin-bottom: 0;">Trainees for this course are expected be electronics or computer engineering students and are also expected to be familiar with semiconductor theory or electronic circuitry.</p><p style="Margin-top: 20px;Margin-bottom: 0;">Participants with basic experience in IC layout and those who want to pursue a career in layout engineering are also welcome.</p>
+    </div>
+    
+          </td>
+        </tr>
+      </tbody></table>
+  
+      <div style="font-size: 20px;line-height: 20px;mso-line-height-rule: exactly;">&nbsp;</div>
+    
+      <table class="layout layout--no-gutter" style="border-collapse: collapse;table-layout: fixed;Margin-left: auto;Margin-right: auto;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #212a32;" align="center">
+        <tbody><tr>
+          <td class="column" style="padding: 0;text-align: left;vertical-align: top;color: #e0dce0;font-size: 14px;line-height: 21px;font-family: Ubuntu,sans-serif;width: 600px;">
+    
+            <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 24px;Margin-bottom: 24px;">
+      <h1 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #80bfc4;font-size: 26px;line-height: 34px;">Online Registration</h1><p style="Margin-top: 20px;Margin-bottom: 0;">This is a first-come,&nbsp;first-served basis. &nbsp;Limited slots only, register now!</p>
+      <p style="Margin-top: 20px;Margin-bottom: 0;">Deadline of online registration is on April 22, 2016 at&nbsp;11:59 P.M.</p>
+      <p style="Margin-top: 20px;Margin-bottom: 0;">The registration link can be found <a href="http://goo.gl/forms/qjN4It9S1U">here</a>.</p>
+    </div>
+    
+          </td>
+        </tr>
+      </tbody></table>
+  
+      <div style="font-size: 20px;line-height: 20px;mso-line-height-rule: exactly;">&nbsp;</div>
+    
+      <table class="footer" style="border-collapse: collapse;table-layout: fixed;Margin-right: auto;Margin-left: auto;border-spacing: 0;width: 560px;" align="center">
+        <tbody><tr>
+          <td style="padding: 0 0 40px 0;">
+            <table class="footer__right" style="border-collapse: collapse;table-layout: auto;border-spacing: 0;" align="right">
+              <tbody><tr>
+                <td class="footer__inner" style="padding: 0;">
+                  
+                  
+                  
+                  
+                </td>
+              </tr>
+            </tbody></table>
+            <table class="footer__left" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;color: #fff;font-family: Ubuntu,sans-serif;width: 380px;margin: auto;">
+              <tbody><tr>
+                <td class="footer__inner" style="padding: 0;font-size: 12px;line-height: 19px;text-align: center;">
+                  <div style="Margin-top: 26px;">
+                    <div><b>Philippine Institute for Integrated Circuits</b><br />
+                    Rm. 413 UP NEC Building (Juinio Hall), Osmeña Avenue<br />
+                    University of the Philippines - Diliman, Quezon City, Philippines 1101<br />
+                    <a href="https://www.facebook.com/Philippine-Institute-for-Integrated-Circuits-478631228920457/">Facebook</a> | <a href="mailto:contactus@piic.org.ph?Subject=April%2011%20Mailer" target="_top">contactus@piic.org.ph<a/> | (632) 981-8500 local 3051-2</div>
+                  </div>
+                  <div class="footer__permission" style="Margin-top: 18px;">
+                    
+                  </div>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table>
+      
+    </div>
+  
+</body></html>
