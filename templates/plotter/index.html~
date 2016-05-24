@@ -191,7 +191,7 @@
 						data.forEach(function(obj) {
 							var row = document.createElement('tr');
 							if (index%2) row.className = 'alt';
-							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</td><td>' + obj.abbrev + '</td><td>' + obj.final + '</td>';
+							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</td><td>' + obj.abbrev + '</td><td>' + obj.final.toFixed(2) + '</td>';
 							table.appendChild(row);
 							index++;
 						});
@@ -337,14 +337,14 @@
 	</div>
 	<div id="box"><center>
 		</br></br>
-		<p style="font:12px sans-serif;">Top 10 trainees from </p>
+		<p style="font:12px sans-serif;">Top 12 trainees from </p>
 		<select id="select_chart5" style="width:150px;">
 			<option selected="select" disabled>Select a site:</option>
 			{% for i in instns %}
 			<option value="{{ i.pk }}"{% ifequal i.abbrev institution %} selected="selected"{% endifequal %}>{{ i.abbrev }}</option>
 			{% endfor %}
 		</select></br></br>
-		<p style="font:12px sans-serif;">Top 10 trainees in </p>
+		<p style="font:12px sans-serif;">Top 12 trainees in </p>
 		<select id="select_chart6" style="width:150px;">
 			<option selected="select" disabled>Select a module:</option>
 			{% for m in modules %}

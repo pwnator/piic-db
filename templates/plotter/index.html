@@ -191,7 +191,7 @@
 						data.forEach(function(obj) {
 							var row = document.createElement('tr');
 							if (index%2) row.className = 'alt';
-							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</td><td>' + obj.abbrev + '</td><td>' + obj.final + '</td>';
+							row.innerHTML = '<td><a href="master/participant/'+ obj.participant_id +'">' + obj.sname + ', ' + obj.fname + '</td><td>' + obj.abbrev + '</td><td>' + obj.final.toFixed(2) + '</td>';
 							table.appendChild(row);
 							index++;
 						});
