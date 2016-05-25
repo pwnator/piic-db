@@ -15,7 +15,11 @@
 				success: function(data){
 					var table = document.getElementById("t_"+String(training_id));
 					$("#t_"+String(training_id)).empty();
-					$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Certificate</th>");
+					{% if restricted %}
+						$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Certificate</th>");
+					{% else %}
+						$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Quiz></th><th>Lab</th><th>Certificate</th>");
+					{% endif %}
 					var index = 0;
 					var prevname;
 					data.forEach(function(obj) {
@@ -25,7 +29,7 @@
 						{% if restricted %}
 							row.innerHTML = '<td><a href="../../participant/' + obj.ppant_id +'">' + name + '</a></td><td><a href="../../institution/'+ obj.instn_id +'">'  + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>**confidential**</td><td>**confidential**</td><td><a href="../../../certificate/' + training_id + '/' + obj.ppant_id + '" target="_blank">Generate</a></td>';
 						{% else %}
-							row.innerHTML = '<td><a href="../../participant/' + obj.ppant_id +'">' + name + '</a></td><td><a href="../../institution/'+ obj.instn_id +'">'  + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td>';
+							row.innerHTML = '<td><a href="../../participant/' + obj.ppant_id +'">' + name + '</a></td><td><a href="../../institution/'+ obj.instn_id +'">'  + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + obj.quiz + '</td><td>' + obj.lab + '</td><td><a href="../../../certificate/' + training_id + '/' + obj.ppant_id + '" target="_blank">Generate</a></td>';
 						{% endif %}
 						table.appendChild(row);
 					});
