@@ -245,7 +245,7 @@ def message(request, ppant_id, html, subject, message):
 	return HttpResponse('sent')
 
 @login_required
-def timestamp(request, category, ppant_id, contactn):
+def timestamp(request, category, medium, ppant_id):
 	p = Participant.objects.get(pk=ppant_id)
 	Message.objects.create(participant=p,category=category,medium=medium)
 	return HttpResponse()

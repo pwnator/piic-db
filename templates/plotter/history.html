@@ -18,7 +18,7 @@
 		<h3>SMS history</h3></br>
 		<table>
 			<th>Name</th><th>Send date</th><th>Purpose/Code</th>
-			{% for m in messages %}
+			{% for m in texts %}
 			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ m.participant_id }}">{{ m.sname }}, {{ m.fname }}</a></td><td>{{ m.timestamp }}</td><td>{{ m.category }}</td></tr>
 			{% endfor %}
 		</table>

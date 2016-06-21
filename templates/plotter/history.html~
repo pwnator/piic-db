@@ -5,7 +5,7 @@
 {% block title %}Contact history{% endblock %}
 {% block body_block %}
 	<div id="g_history">
-	<div id="box">
+	<div id="box4">
 		<h3>Modification history</h3></br>
 		<table>
 			<th>Name</th><th>Latest edit</th><th>Remarks/Plans</th>
@@ -14,17 +14,17 @@
 			{% endfor %}
 		</table>
 	</div>
-	<div id="box">
+	<div id="box4">
 		<h3>SMS history</h3></br>
 		<table>
 			<th>Name</th><th>Send date</th><th>Purpose/Code</th>
-			{% for m in messages %}
+			{% for m in texts %}
 			<tr{% if forloop.counter|divisibleby:2 %} class="alt"{% endif %}><td><a href="../master/participant/{{ m.participant_id }}">{{ m.sname }}, {{ m.fname }}</a></td><td>{{ m.timestamp }}</td><td>{{ m.category }}</td></tr>
 			{% endfor %}
 		</table>
 	</div>
 	<p></p>
-	<div id="box">
+	<div id="box4">
 		<h3>E-mail history</h3></br>
 		<table>
 			<th>Name</th><th>Send date</th><th>Purpose/Code</th>

@@ -36,9 +36,10 @@ urlpatterns = [
 	url(r'^test/$', views.test, name='test'),
 	url(r'^asms/$', views.asms, name='asms'),
 	url(r'^asms/(?P<ppant_id>[0-9]+)/(?P<ip>[^/]+)/(?P<message>.([^/]+))/$', views.text, name='text'),
+	url(r'^asms/(?P<category>[\w]+)/(?P<medium>[\w]+)/(?P<ppant_id>[0-9]+)/$', views.timestamp, name='timestamp'),
 	url(r'^mail/$', views.mail, name='mail'),
 	url(r'^mail/upload/$', views.upload, name='upload'),
 	url(r'^mail/(?P<ppant_id>[0-9]+)/(?P<html>[0-1]+)/(?P<subject>[^/]+)/(?P<message>.([^/]+))/$', views.message, name='message'),
-	url(r'^mail/(?P<category>[\w]+)/(?P<ppant_id>[\w]+)/(?P<contactn>[0-9]+)/$', views.timestamp, name='timestamp'),
+	url(r'^mail/(?P<category>[\w]+)/(?P<medium>[\w]+)/(?P<ppant_id>[0-9]+)/$', views.timestamp, name='timestamp'),
 	url(r'^(?P<query>.*)/$', views.query, name='query'),
 ]
