@@ -23,6 +23,7 @@
 						var message = encodeURIComponent(document.getElementById("msg").value);
 						if (index%2) row.className = 'alt';
 						row.innerHTML = '<td><a href="../master/participant/' + obj.id +'">' + obj.sname + ', ' + obj.fname + '</a></td><td>' + obj.abbrev + '</td><td>' + obj.designation + '</td><td>' + obj.email + '</td><td><a href="' + obj.id + '/' + ip + '/' + message + '">' + obj.contactn + '</a></td><td style="text-align:center;vertical-align:middle;"><input type="checkbox" class="cb" value="' + obj.contactn + '"></td><td id="' + obj.id + '" style="text-align:center;">-</td>';
+						row.id = obj.id
 						table.appendChild(row);
 					});
 					table.innerHTML = table.innerHTML + '</br><button onclick="send()">Send to checked participants</button></br></br></br>';
@@ -72,7 +73,7 @@
 		});
 		function send(){
 			$('.cb:checked').each(function() {
-				var num = $(this).val();
+				var id = $(this).closest('tr').attr('id');
 				var link = $(this).parent().prev().find('a').prop("href");
 				var status = $(this).parent().next();
 				$(status).empty();
@@ -88,7 +89,7 @@
 						if (data.responseText == 'sent') {
 							$(status).html('<font color="#007800">✔</font>');
 							var category = document.getElementById("category").value;
-							$.get(encodeURIComponent(category) + '/text/' + num);
+							$.get(encodeURIComponent(category) + '/text/' + id);
 						}
 						else $(status).html('<font color="780000">✘</font>');
 					},
