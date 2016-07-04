@@ -528,7 +528,7 @@ def training(request, training_id):
 	if request.user.username == 'dost':
 		return render(request, 'plotter/training.html', {'results' : results, 'restricted' : True})
 	else:
-		return render(request, 'plotter/training.html', {'results' : results})
+		return render(request, 'plotter/training.html', {'results' : results, 'count' : Participant.objects.filter(trainees__in=Training.objects.filter(pk=training_id))})
 
 @login_required
 def training_related(request, training_id):

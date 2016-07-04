@@ -18,7 +18,7 @@
 					{% if restricted %}
 						$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Certificate</th>");
 					{% else %}
-						$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Quiz></th><th>Lab</th><th>Certificate</th>");
+						$("#t_"+String(training_id)).html("<th>Name</th><th>Institution</th><th>Designation</th><th>E-mail</th><th>Contact number</th><th>Quiz</th><th>Lab</th><th>Certificate</th>");
 					{% endif %}
 					var index = 0;
 					var prevname;
@@ -46,7 +46,7 @@
 		<p>{% if results.0.date %}Date: {% widthratio results.0.date 10000 1 as syear %}{% widthratio syear 1 -10000 as srem1 %}{% with results.0.date|add:srem1 as srem2 %}{% widthratio srem2 100 1 as smonth %}{% widthratio smonth 1 -100 as srem3 %}{{ syear }}/{{ smonth }}/{{ srem2|add:srem3 }}{% endwith %}{% endif %}</p>
 		<p>{% if results.0.year %}Year: {{ results.0.year }}{% endif %}</p>
 		<p>{% if results.0.ppant_id %}Instructor: {% for r in results %}<a href="../../participant/{{ r.ppant_id }}">{{ r.sname }}, {{ r.fname }}</a> {% endfor %}{% endif %}</p></br>
-		<div id="g_{{ results.0.id }}"><p><b>Trainees</b></p><center><table id="t_{{ results.0.id }}"></table></center></div>
+		<div id="g_{{ results.0.id }}"><p><b>Trainees: {{ results|count }}</b></p><center><table id="t_{{ results.0.id }}"></table></center></div>
 	{% endif %}
 {% endblock %}
 {% block body_script %}
