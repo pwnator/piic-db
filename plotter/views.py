@@ -67,7 +67,7 @@ def chart1a(request, year):
 @login_required
 def chart1b(request, year):
 	cursor = connection.cursor()
-	cursor.execute('SELECT topic,COUNT(participant_id) FROM plotter_module,plotter_training,plotter_training_trainee WHERE year=%s AND plotter_module.ID=plotter_training.module_id AND training_id=plotter_training.ID GROUP BY topic', [year])
+	cursor.execute('SELECT topic,(CASE WHEN topic!="AL" THEN COUNT(participant_id) ELSE COUNT(participant_id)*2 END) AS count FROM plotter_module,plotter_training,plotter_training_trainee WHERE year=%s AND plotter_module.ID=plotter_training.module_id AND training_id=plotter_training.ID GROUP BY topic', [year])
 	results = cursor.fetchall()
 	return JsonResponse(dict(results))
 
@@ -81,7 +81,7 @@ def chart2a(request, year):
 @login_required
 def chart2b(request, year):
 	cursor = connection.cursor()
-	cursor.execute('SELECT designation,COUNT(participant_id) FROM plotter_training,plotter_training_trainee,plotter_participant WHERE year=%s AND participant_id=plotter_participant.ID AND training_id=plotter_training.ID GROUP BY designation', [year])
+	cursor.execute('SELECT T1.designation, T1.count+T2.count FROM (SELECT designation,COUNT(participant_id) AS count FROM plotter_module,plotter_training,plotter_training_trainee,plotter_participant WHERE year=%s AND participant_id=plotter_participant.ID AND training_id=plotter_training.ID AND plotter_training.module_id=plotter_module.ID AND topic="AL" GROUP BY designation) AS T1 LEFT JOIN (SELECT designation,COUNT(participant_id) AS count FROM plotter_training,plotter_training_trainee,plotter_participant WHERE year=%s AND participant_id=plotter_participant.ID AND training_id=plotter_training.ID GROUP BY designation) AS T2 ON T1.designation=T2.designation ORDER BY T1.designation', [year, year])
 	results = cursor.fetchall()
 	return JsonResponse(dict(results))
 
