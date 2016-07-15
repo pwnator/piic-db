@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '06*bs&49@*^wtqwqa@2bia^om37wpiz#!u=3knjl&4mdg%a723'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.10.25.176', 'localhost', 'db.portal.piic.org.ph']
 
 # Application definition
 

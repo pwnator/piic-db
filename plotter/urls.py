@@ -19,6 +19,7 @@ urlpatterns = [
 	url(r'^employed/$', views.employed, name='employed'),
 	url(r'^certificate/(?P<training_id>[0-9]+)/(?P<ppant_id>[0-9]+)/$', views.certificate, name='certificate'),
 	url(r'^verif/(?P<serial>[\w]+)/$', views.verification, name='verification'),
+	url(r'^csece/$', views.csece, name='csece'),
 	url(r'^master/$', views.master, name='master'),
 	url(r'^master/modlist/(?P<mod_id>[0-9]+)/$', views.modlist, name='modlist'),
 	url(r'^master/participant/$', views.participant_home, name='participant_home'),

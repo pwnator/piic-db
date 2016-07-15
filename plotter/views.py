@@ -338,6 +338,9 @@ def verification(request, serial):
 	except Message.DoesNotExist:
 		return render(request, 'plotter/verif.html', {'serial' : serial, 'missing' : True})
 
+def csece(request):
+	return render(request, 'plotter/csece.html')
+
 @login_required
 def master(request):
 	cursor = connection.cursor()
