@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '06*bs&49@*^wtqwqa@2bia^om37wpiz#!u=3knjl&4mdg%a723'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-#ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['10.10.25.176', 'localhost', 'db.portal.piic.org.ph']
+ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -123,6 +123,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = False
 EMAIL_USE_TLS = False
 EMAIL_HOST = 'mail.piic.org.ph'
+EMAIL_PORT = 26
 EMAIL_HOST_USER = 'joel@piic.org.ph'
 EMAIL_HOST_PASSWORD = '..4thfloorNEC'
 
