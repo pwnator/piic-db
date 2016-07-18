@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="shortcut icon" href="{% static "images/favicon.png" %}" type="image/png" />
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+<style type='text/css'>
+body, html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', sans-serif;
+}
+.wrapper {
+	width: 700px;
+	margin: 0 auto;
+	height: 100%;
+	padding-top: 10px;
+}
+#partners {
+	padding-top: 20px;
+}
+#quiz {
+	background-color: #7B1113;
+	padding-bottom: 60px;
+	width: 100%;
+	border-radius: 2%;
+	color: #fff;
+	text-align: center;
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+#quiz > h1 {
+	text-align: center;
+	padding-top: 25px;
+	font-size: 20px;
+}
+.questions {
+	font-size: 28px;
+	font-weight: 700;
+	font-style: italic;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #FFFFFF;
+	padding: 20px;
+}
+.answers div {
+	padding: 10px 0 0 0;
+	font-size: 16px;
+}
+.answers div:hover {
+	cursor: pointer;
+	color: #FBCB43;
+}
+.answers {
+	padding: 0px 0 10px 0px;
+}
+.answers div {
+	width: 50%;
+	margin: 0 auto;
+	padding-bottom: 15px;
+	border-top: 1px solid grey;
+}
+.answers div:first-child {
+	border: none;
+}
+.checker {
+	display: inline-block;
+	width: 200px;
+	margin: 0 auto;
+}
+.correct, .false {
+	background-color: #109D59;
+	width: 60px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 4px;
+	float: left;
+	margin-left: 2px;
+	margin-top: 2px;
+}
+.false {
+	background-color: #DC4437;
+}
+#clockdiv{
+	padding-top: 15px;
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+#clockdiv > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: #7B1113;
+	display: inline-block;
+}
+#clockdiv div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: #A90018;
+	display: inline-block;
+}
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
+}
+</style>
+<script src="{% static "js/jquery-1.11.3.min.js" %}"></script>
+<script type='text/javascript'>
+window.onload = function () {
+	  
+	var questionArea = document.getElementsByClassName('questions')[0];
+	var answerArea = document.getElementsByClassName('answers')[0];
+	var checker = document.getElementsByClassName('checker')[0];
+	var current = 0;
+	var qCount = 6;
+	var timeLimit = 2;
+	  
+	allQuestions = {
+		'What MOS configuration has a voltage gain close to 1?' : ['Common-drain', 'Common-source', 'Common-gate', 2],
+		'What is equivalent to ~(A + B)?' : ['~A × ~B', '~A + ~B' , '~(A × B)', 0],
+		'What is the minimum amount of transistors needed to create a basic SRAM cell?' : ['2', '4', '6', 1],
+		'What is the closed-loop transfer function of plant G(s) in unity gain feedback?' : ['G(s)/[1+G(s)]', 'G(s)/[1-G(s)]', '1/[1-G(s)]', 0],
+		'How does gm vary with W/L' : ['Independent of W/L', 'Inversely proportional to W/L', 'Proportional to W/L', 2],
+		'What are the operating regions of the transistors of an inverter when V_in = V_out?' : ['PMOS: saturation; NMOS: saturation', 'PMOS: cutoff; NMOS: cutoff', 'PMOS: linear; NMOS; linear', 0],
+		'What is the correct order in patterning SiO₂?' : ['Growth of silicon on wafer -> Exposing photoresist -> Deposition of negative photoresist -> Silicon base material', 'Silicon base material -> growth of silicon on wafer -> deposition of negative photoresist -> Exposing photoresist', 'Deposition of negative photoresist -> Exposing photoresist -> Silicon base material -> Growth of silicon on wafer', 1]
+	};
+
+	function shuffle(arr) {
+		for (var j, temp, i = arr.length; i > 0; j = Math.floor(Math.random()*i), temp = arr[--i], arr[i] = arr[j], arr[j] = temp);
+		return arr;
+	}
+
+	function loadQA(curr) {
+		var question = Object.keys(allQuestions)[curr];
+		var answers = allQuestions[Object.keys(allQuestions)[curr]];
+		questionArea.innerHTML = '';
+		questionArea.innerHTML = question;    
+		answerArea.innerHTML = '';
+
+		for (var i = 0; i < answers.length -1; i += 1) {
+			var createDiv = document.createElement('div'),
+			text = document.createTextNode(answers[i]);
+   
+			createDiv.appendChild(text);      
+			createDiv.addEventListener("click", checkAnswer(i, answers));
+			answerArea.appendChild(createDiv);
+		}
+	}
+
+	fullList = Array.from({length: Object.keys(allQuestions).length}, (v, k) => k);
+	fullList = shuffle(fullList).slice(0,qCount);
+	  
+	function checkAnswer(i, arr) {
+		return function () {
+			var givenAnswer = i,
+			correctAnswer = arr[arr.length-1];
+	      
+			if (givenAnswer == correctAnswer) {
+				addChecker(true);             
+			} else {
+				addChecker(false);
+			}
+
+			if (current < (qCount-1)) {
+				current ++;
+				loadQA(fullList[current]);
+			} else {
+				questionArea.innerHTML = 'Done';
+				answerArea.innerHTML = '';
+			}
+		};
+	}
+	  
+	function addChecker(bool) {
+		var createDiv = document.createElement('div');
+		var txt = document.createTextNode(current + 1);
+	    
+		createDiv.appendChild(txt);
+	    
+		if (bool) {
+			createDiv.className += 'correct';
+			checker.appendChild(createDiv);
+		} else {
+			createDiv.className += 'false';
+			checker.appendChild(createDiv);
+		}
+	}
+
+	$('#clockdiv').hide();
+
+	function getTimeRemaining(endtime) {
+		var t = Date.parse(endtime) - Date.parse(new Date());
+		var seconds = Math.floor((t / 1000) % 60);
+		var minutes = Math.floor((t / 1000 / 60) % 60);
+		return {
+			'total': t,
+			'minutes': minutes,
+			'seconds': seconds
+		};
+	}
+
+	function initializeClock(endtime) {
+		var clock = document.getElementById('clockdiv');
+		var minutesSpan = clock.querySelector('.minutes');
+		var secondsSpan = clock.querySelector('.seconds');
+
+		function updateClock() {
+			var t = getTimeRemaining(endtime);
+			minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+			if (t.total == 0) {
+				clearInterval(timeinterval);
+				questionArea.innerHTML = 'Done';
+				answerArea.innerHTML = '';
+			}
+		}
+
+		updateClock();
+		var timeinterval = setInterval(updateClock, 1000);
+	}
+
+	$('#start').click(function() {
+		var deadline = new Date(Date.parse(new Date()) + timeLimit * 60 * 1000);
+		initializeClock(deadline);
+		$('#clockdiv').show();
+		$('#title').detach();
+		$('#start').detach();
+		$('#questions').html('');
+		$('#correct').html('Correct?');
+		loadQA(fullList[current]);	
+	});
+
+};
+</script>
+<title>CSECE Quiz</title>
+</head>
+<body oncontextmenu="return false;">
+	<div class="wrapper">
+		<div id="quiz">
+			<h1 id="title">CSECE quiz</h1>
+			<div id="clockdiv">
+				<div>
+					<span class="minutes"></span>
+					<div class="smalltext">Minutes</div>
+				</div>
+				<div>
+					<span class="seconds"></span>
+					<div class="smalltext">Seconds</div>
+				</div>
+			</div>
+			<p class="questions">Answer these questions and you will win a prize based on your final score!</p>
+			<div class="answers"></div>         
+			<div class="checkAnswers">
+				<h3 id="correct"></h3>
+				<h2 id="start">Start?</h2>
+				<div class="checker"></div>
+			</div>
+		</div>
+		<div id="partners">
+			<center>
+			<img src="{% static "images/up.png" %}" height="67"></img>
+			<img src="{% static "images/eeei.png" %}" height="67"></img>
+			<img src="{% static "images/dost.png" %}" height="67"></img>
+			<img src="{% static "images/pcieerd.png" %}" height="67"></img>
+			<img src="{% static "images/piic.png" %}" height="67"></img>
+			<img src="{% static "images/admatel.png" %}" height="67"></img>
+			<img src="{% static "images/epdc.png" %}" height="67"></img>
+			</center>
+		</div>
+	</div>
+</body>
+</html>
+
+
