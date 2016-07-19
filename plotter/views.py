@@ -390,7 +390,7 @@ def participant(request, ppant_id):
 		return render(request, 'plotter/participant.html', {'results' : results})
 
 @login_required
-def update(request, ppant_id, availability, employment, workdetails, remarks):
+def update(request, ppant_id, contactn, email, availability, employment, workdetails, remarks):
 	if request.user.username == 'dost':
 		return HttpResponse("This account has insufficient privileges.")
 	else:
@@ -403,6 +403,8 @@ def update(request, ppant_id, availability, employment, workdetails, remarks):
 			x.employment = True
 		else:
 			x.employment = False
+		x.contactn = contactn
+		x.email = email
 		x.workdetails = workdetails
 		x.remarks = remarks
 		x.save()

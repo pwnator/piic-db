@@ -33,6 +33,8 @@
 			});
 		}
 		function update() {
+			var j = document.getElementById("contactn").value;
+			var k = document.getElementById("email").value;
 			var w = $('#availability').prop('checked');
 			var x = $('#employment').prop('checked');
 			var y = document.getElementById("workdetails").value;
@@ -40,7 +42,7 @@
 			if (y=='') y = "None";
 			if (z=='') z = "None";
 			$.ajax({
-				url: 'update/'+w+'/'+x+'/'+encodeURIComponent(y)+'/'+encodeURIComponent(z)+'/',
+				url: 'update/'+j+'/'+k+'/'+w+'/'+x+'/'+encodeURIComponent(y)+'/'+encodeURIComponent(z)+'/',
 				data: w,
 				success: function(data){
 					window.location.reload();
@@ -54,8 +56,8 @@
 		{% if restricted %}<p><b>Note: Only the staff may fully utilize the page. Some functions may be disabled for the sake of data confidentiality.</b></p>{% endif %}
 		<h1>{{ results.0.sname }}, {{ results.0.fname }} {% if results.0.mi %}{{ results.0.mi }}{% endif %}</h1></br>
 		<p>{% if results.0.abbrev %}Institution: <a href="../../institution/{{ results.0.instn_id }}">{{ results.0.abbrev }}</a>{% endif %}</p>
-		<p>{% if results.0.email %}Email: {% if restricted %}**confidential**{% else %}{{ results.0.email }}{% endif %}{% endif %}</p>
-		<p>{% if results.0.contactn %}Contact number: {% if restricted %}**confidential**{% else %}{{ results.0.contactn }}{% endif %}{% endif %}</p>
+		<p style="float:left">{% if results.0.email %}Email: {% if restricted %}**confidential**</p>{% else %}</p><textarea style="float:left;margin-left:7px" id="email" rows="1" cols="40">{{ results.0.email }}</textarea></br></br></br>{% endif %}{% endif %}
+		<p style="float:left">{% if results.0.contactn %}Contact number: {% if restricted %}**confidential**</p>{% else %}</p><textarea style="float:left;margin-left:7px" id="contactn" rows="1" cols="10">{{ results.0.contactn }}</textarea></br></br></br>{% endif %}{% endif %}
 		<p>Instructor: <b>{{ results.0.instructor|yesno:"Yes,No" }}</b></p>
 		<p>{% if results.0.designation %}Designation: {{ results.0.designation }}{% endif %}</p>
 		<p>{% if results.0.graddate %}Graduation date: {% widthratio results.0.graddate 10 1 as gyear %}{% widthratio gyear 1 -10 as gfactor %}{{ results.0.graddate|add:gfactor }}H {{ gyear }}{% endif %}</p>
