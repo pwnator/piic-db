@@ -57,7 +57,7 @@ class ParticipantAdmin(admin.ModelAdmin):
 	]
 	readonly_fields = ('modified',)
 	inlines = [TrainingInline]
-	list_display = ('__str__','instn','modified','remarks')
+	list_display = ('__str__','instn','modified','remarks','workdetails')
 	search_fields = ['sname','fname','instn__abbrev','instn__fullname','designation']
 	ordering = ['instn','sname']
 
