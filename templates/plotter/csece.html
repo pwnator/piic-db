@@ -25,6 +25,7 @@ body, html {
 }
 #quiz {
 	background-color: #D2E5B4;
+	margin-top: 20px;
 	padding-bottom: 60px;
 	width: 100%;
 	border-radius: 2%;
@@ -119,8 +120,22 @@ window.onload = function () {
 	var current = 0;
 	var qCount = 6;
 	var timeLimit = 2;
+	var timeinterval;
+
+	var allQuestions = {
+		"Electronics Product Development Center (EPDC) is under the DOST's Technology-based Inclusive Growth Program, named __________ Philippines." : ['Advanced', 'Smarter', 'Richer', 'Upgraded', 1],
+		"Which is not one of the major services offered by EPDC?" : ['Electromagnetic Compatibility Testing', 'PCB Prototyping', 'Product Prototyping', 'Thermal Analysis', 3],
+		"What does EMC stand for?" : ["Electronics Manufacturing Company", "Electronic Material Coverage", "Electromagnetic Compatibility", "Environmental Management Compliance", 2],
+		"Which one is not one of the services offered by EPDC with regards to printed circuit boards (PCB)?" : ['3D scanning', 'PCB design', 'PCB prototyping', 'PCB testing', 0],
+		"Which one is not one of the electronic product prototyping services that EPDC offers?" : ['RoHS analysis', 'Thermal imaging', 'PCB assembly', 'Flicker testing', 3],
+		"What does ADMATEL stand for?" : ['Advanced Device and Machine Testing Laboratory', 'Advanced Device and Materials Testing Laboratory', 'Advanced Development and Materials Testing Laboratory', 'Advanced Development and Machine Testing Laboratory', 1],
+		"Which of these tests determine the composition of your sample?" : ['Differential Scanning Calorimeter (DSC)', 'Field Emission Scanning Electron Microscope (FESEM)', 'Fourier Transform Infrared Spectroscopy (FTIR)', 2],
+		"Which of these tests determine the thermal properties of your sample?" : ['Augur Electron Spectroscopy (AES)', 'Differential Scanning Calorimeter (DSC)', 'Fourier Transform Infrared Spectroscopy (FTIR)', 1],
+		"Which of these tests is a sample preparation equipment?" : ['Ion Beam Cross-section Polisher', 'Augur Electron Spectroscopy (AES)', 'Thermomechanical Analyzer (TMA)', 0],
+		"What is the process of collecting and analyzing data to determine the cause of a failure?" : ['Disaster mitigation', 'Hazard awareness', 'Failure analysis', 2]
+	};
 	  
-	allQuestions = {
+	/**allQuestions = {
 		'What MOS configuration has a voltage gain close to 1?' : ['Common-drain', 'Common-source', 'Common-gate', 2],
 		'What is equivalent to ~(A + B)?' : ['~A × ~B', '~A + ~B' , '~(A × B)', 0],
 		'What is the minimum amount of transistors needed to create a basic SRAM cell?' : ['2', '4', '6', 1],
@@ -128,7 +143,7 @@ window.onload = function () {
 		'How does gm vary with W/L' : ['Independent of W/L', 'Inversely proportional to W/L', 'Proportional to W/L', 2],
 		'What are the operating regions of the transistors of an inverter when V_in = V_out?' : ['PMOS: saturation; NMOS: saturation', 'PMOS: cutoff; NMOS: cutoff', 'PMOS: linear; NMOS; linear', 0],
 		'What is the correct order in patterning SiO₂?' : ['Growth of silicon on wafer -> Exposing photoresist -> Deposition of negative photoresist -> Silicon base material', 'Silicon base material -> growth of silicon on wafer -> deposition of negative photoresist -> Exposing photoresist', 'Deposition of negative photoresist -> Exposing photoresist -> Silicon base material -> Growth of silicon on wafer', 1]
-	};
+	};**/
 
 	function shuffle(arr) {
 		for (var j, temp, i = arr.length; i > 0; j = Math.floor(Math.random()*i), temp = arr[--i], arr[i] = arr[j], arr[j] = temp);
@@ -170,7 +185,8 @@ window.onload = function () {
 				current ++;
 				loadQA(fullList[current]);
 			} else {
-				questionArea.innerHTML = 'Done';
+				clearInterval(timeinterval);
+				questionArea.innerHTML = 'Done!';
 				answerArea.innerHTML = '';
 			}
 		};
@@ -215,13 +231,13 @@ window.onload = function () {
 			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 			if (t.total == 0) {
 				clearInterval(timeinterval);
-				questionArea.innerHTML = 'Done';
+				questionArea.innerHTML = "Time's up!";
 				answerArea.innerHTML = '';
 			}
 		}
 
 		updateClock();
-		var timeinterval = setInterval(updateClock, 1000);
+		timeinterval = setInterval(updateClock, 1000);
 	}
 
 	$('#start').click(function() {
@@ -237,12 +253,13 @@ window.onload = function () {
 
 };
 </script>
-<title>CSECE Quiz</title>
+<title>DOST QUIZ</title>
 </head>
 <body oncontextmenu="return false;">
 	<div class="wrapper">
+		<center><img src="{% static "images/csece.png" %}" width="400"></img></center>
 		<div id="quiz">
-			<h1 id="title">CSECE quiz</h1>
+			<h1 id="title">DOST QUIZ</h1>
 			<div id="clockdiv">
 				<div>
 					<span class="minutes"></span>
@@ -253,7 +270,7 @@ window.onload = function () {
 					<div class="smalltext">Seconds</div>
 				</div>
 			</div>
-			<p class="questions">Answer these questions and you will win a prize based on your final score!</p>
+			<p class="questions">Answer 6 questions within 2 minutes and you will win a prize based on your final score!</p>
 			<div class="answers"></div>         
 			<div class="checkAnswers">
 				<h3 id="correct"></h3>
