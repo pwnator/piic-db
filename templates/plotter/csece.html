@@ -172,7 +172,7 @@ window.onload = function () {
 		}
 	}
 
-	fullList = Array.from({length: Object.keys(allQuestions).length}, (v, k) => k);
+	fullList = Array.from(Array(Object.keys(allQuestions).length).keys());
 	fullList = shuffle(fullList).slice(0,qCount);
 	  
 	function checkAnswer(i, arr) {
