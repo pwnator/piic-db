@@ -50,10 +50,6 @@ body, html {
 	padding: 10px 0 0 0;
 	font-size: 16px;
 }
-.answers div:hover {
-	cursor: pointer;
-	color: #FBCB43;
-}
 .answers {
 	padding: 0px 0 10px 0px;
 }
@@ -118,8 +114,8 @@ window.onload = function () {
 	var answerArea = document.getElementsByClassName('answers')[0];
 	var checker = document.getElementsByClassName('checker')[0];
 	var current = 0;
-	var qCount = 6;
-	var timeLimit = 2;
+	var qCount = 3;
+	var timeLimit = .5;
 	var timeinterval;
 
 	var allQuestions = {
@@ -172,7 +168,7 @@ window.onload = function () {
 		}
 	}
 
-	fullList = Array.from({length: Object.keys(allQuestions).length}, (v, k) => k);
+	fullList = Array.from(Array(Object.keys(allQuestions).length).keys());
 	fullList = shuffle(fullList).slice(0,qCount);
 	  
 	function checkAnswer(i, arr) {
@@ -227,12 +223,12 @@ window.onload = function () {
 
 	function initializeClock(endtime) {
 		var clock = document.getElementById('clockdiv');
-		var minutesSpan = clock.querySelector('.minutes');
+		//var minutesSpan = clock.querySelector('.minutes');
 		var secondsSpan = clock.querySelector('.seconds');
 
 		function updateClock() {
 			var t = getTimeRemaining(endtime);
-			minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+		//	minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
 			secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 			if (t.total == 0) {
 				clearInterval(timeinterval);
@@ -266,16 +262,16 @@ window.onload = function () {
 		<div id="quiz">
 			<h1 id="title">DOST QUIZ</h1>
 			<div id="clockdiv">
-				<div>
+				<!--<div>
 					<span class="minutes"></span>
 					<div class="smalltext">Minutes</div>
-				</div>
+				</div>-->
 				<div>
 					<span class="seconds"></span>
 					<div class="smalltext">Seconds</div>
 				</div>
 			</div>
-			<p class="questions">Answer 6 questions within 2 minutes and you will win a prize based on your final score!</p>
+			<p class="questions">Answer 3 questions within 30 seconds and you will win a prize based on your final score!</p>
 			<div class="answers"></div>         
 			<div class="checkAnswers">
 				<h3 id="correct"></h3>
