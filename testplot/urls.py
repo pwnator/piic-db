@@ -4,6 +4,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from plotter import views
 
+admin.site.site_header = 'PIIC administration'
+admin.site.site_title = 'PIIC database admin'
+admin.site.index_title = 'Database administration'
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'testplot.views.home', name='home'),
