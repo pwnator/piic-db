@@ -37,13 +37,13 @@
 				url: 'modlist/1/',
 				success: function(data){
 					$("#t_master").empty();
-					$("#t_master").html("<thead><tr><th>Name</th><th>Institution</th><th>Designation</th><th>Graduation date</th><th>Interview availability</th><th>Employed?</th><th>Work details</th>{% for m in modules %}<th class='module'><a href='module/{{ m.ID }}' style='font-size:11px'>{{ m.topic }}</a></th>{% endfor %}<th>Email</th><th>Contact number</th><th>Last modified</th></tr></thead><tbody></tbody>");
+					$("#t_master").html("<thead><tr><th>Name</th><th>Institution</th><th>Designation</th><th>Graduation date</th><th>Interview availability</th><th>Employed?</th><th>Work details</th>{% for m in modules %}<th class='module'><a href='module/{{ m.ID }}' style='font-size:11px'>{{ m.topic }}</a></th>{% endfor %}<th>Email</th><th>Contact number</th><th>Remarks</th></tr></thead><tbody></tbody>");
 					var tbody = document.getElementById("t_master").getElementsByTagName("tbody")[0];
 					var index = 0;
 					var prevname;
 					data.forEach(function(obj) {
 						var date = 0;
-						var parsedate, availability, employment, details;
+						var parsedate, availability, employment, details, remarks;
 						var name = obj.sname + ', ' + obj.fname;
 						if (obj.graddate) date = obj.graddate.toString();
 						if (obj.graddate) parsedate = date.substring(0,4) + ' ' + date.substring(4,5) + 'H';
@@ -54,11 +54,13 @@
 						else employment = "No";
 						if (obj.workdetails) details = obj.workdetails;
 						else details = "N/A";
+						if (obj.remarks) remarks = obj.remarks.toString();
+						else remarks = "N/A";
 						var row = document.createElement('tr');
 						{% if restricted %}
-							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment '</td><td>**confidential</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>**confidential**</td><td>**confidential**</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment '</td><td>**confidential</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>**confidential**</td><td>**confidential**</td><td>**confidential**</td>';
 						{% else %}
-							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + details + '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + Date.parse(obj.modified.slice(0,-5)).add(8).hours() + '</td>';
+							row.innerHTML = '<td><a href="participant/'+ obj.ppant_id +'">' + name + '</a></td><td><a href="institution/' + obj.instn_id + '">' + obj.abbrev + '</a></td><td>' + obj.designation + '</td><td>' + parsedate + '</td><td>' + availability + '</td><td>' + employment + '</td><td>' + details + '</td>' + {% for m in modules %} '<td id="td_master_{{ m.ID }}_' + String(index) + '"></td>' + {% endfor %} '<td>' + obj.email + '</td><td>' + obj.contactn + '</td><td>' + remarks + '</td>';
 						{% endif %}
 						if (prevname != name){
 							tbody.appendChild(row);
