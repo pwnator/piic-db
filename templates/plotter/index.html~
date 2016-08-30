@@ -13,10 +13,22 @@
 		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
-		var chart1a, chart1b, chart2a, chart2b, chart7;
+		var chart0, chart1a, chart1b, chart2a, chart2b, chart7;
 		var monthtext = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-		var topic, graddate;
+		var topic, graddate, sem;
 		$(document).ready(function(){
+			chart0 = c3.generate({
+				bindto: '#chart0',
+				data: {
+					columns: [],
+					type: 'pie',
+					//onclick: function(d,i) {
+					//	select_chart8(d.name);
+					//},
+				},
+				pie: {label: {format: function(value){return value;}}},
+				transition: {duration: 600}
+			});
 			chart1a = c3.generate({
 				bindto: '#chart1a',
 				data: {
@@ -48,7 +60,7 @@
 				bindto: '#chart2b',
 				data: {
 					columns: [],
-					type: 'donut'
+					type: 'donut',
 				},
 				donut: {label: {format: function(value){return value;}}},
 				transition: {duration: 600}
@@ -199,6 +211,24 @@
 				});
 			});
 			{% endif %}
+			function select_chart0(sem) {
+				chart0.unload();
+				$.ajax({
+					url: 'chart0/'+sem+'/',
+					data: sem,
+					success: function(data){
+						setTimeout(function (){
+							$.each(data, function(key, value){
+								if (value >= sem) chart0.load({columns: [[String(value).substring(4).concat("H ",String(value).substring(0,4)), key]]});
+								else chart0.load({columns: [["Graduates", value]]});
+							});
+						}, 300);
+					}
+				});
+			};
+			var today = new Date();
+			if (today.getMonth() < 6) select_chart0(String(today.getFullYear()).concat("1"));
+			else select_chart0(String(today.getFullYear()).concat("2"));
 		});
 		function popdate(monthfield, yearfield){
 			var today = new Date()
@@ -277,6 +307,9 @@
 {% endblock %}
 {% block body_block %}
 	<div style="border-style:solid;border-color:#B21501"><center></br><p style="font:14px sans-serif;">Total undergraduates trained: <b>{{ students.count }}</b></p><p style="font:14px sans-serif;">Total MS students trained: <b>{{ masters.count }}</b></p><p style="font:14px sans-serif;">Total faculty members trained: <b>{{ faculty.count }}</b></p><p style="font:14px sans-serif;">Total engineers trained: <b>{{ engineers.count }}</b></p><p style="font:16px sans-serif;">Total trained: <b>{{ total.count }}</b></p><p>------------------------------------------------------------------------</p><p style="font:16px sans-serif;">Total students employed in microelectronics: <b>{{ employed.count }}</b></p></center></br></div></br></br>
+	<div id="box"></div>
+	<div id="box"><div id="chart0"></div></div>
+	<div id="box"></div>
 	<div id="box"><div id="chart1a"></div></div>
 	<div id="box"><center>
 		</br></br>
@@ -391,6 +424,5 @@
 {% block body_script %}
 	<script>
 		$('#stats').addClass('active');
-		popdate("monthselect","yearselect");
 	</script>
 {% endblock %}

@@ -5,6 +5,7 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^login/$', views.user_login, name='login'),
 	url(r'^logout/$', views.user_logout, name='logout'),
+	url(r'^chart0/(?P<year>[0-9]+)/$', views.chart0, name='chart0'),
 	url(r'^chart1a/(?P<year>[0-9]+)/$', views.chart1a, name='chart1a'),
 	url(r'^chart1b/(?P<year>[0-9]+)/$', views.chart1b, name='chart1b'),
 	url(r'^chart2a/(?P<year>[0-9]+)/$', views.chart2a, name='chart2a'),

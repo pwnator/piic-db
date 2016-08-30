@@ -58,6 +58,13 @@ def index(request):
 	return render(request, 'plotter/index.html', context_dict)
 
 @login_required
+def chart0(request, year):
+	cursor = connection.cursor()
+	cursor.execute('SELECT graddate,COUNT(graddate) FROM plotter_participant,plotter_institution WHERE instn_id=plotter_institution.ID AND abbrev NOT LIKE "%Roadshow" AND graddate<%s UNION SELECT COUNT(graddate),graddate FROM plotter_participant,plotter_institution WHERE instn_id=plotter_institution.ID AND abbrev NOT LIKE "%Roadshow" AND graddate>=%s GROUP BY graddate ORDER BY graddate', [year, year])
+	results = cursor.fetchall()
+	return JsonResponse(dict(results))
+
+@login_required
 def chart1a(request, year):
 	cursor = connection.cursor()
 	cursor.execute('SELECT topic,COUNT(*) FROM plotter_module,plotter_training WHERE year=%s AND plotter_module.ID=plotter_training.module_id GROUP BY topic', [year])
