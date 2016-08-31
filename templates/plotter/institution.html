@@ -51,7 +51,6 @@
 			<p>Full name: {{ results.0.fullname }}</p>
 			<p>{% if results.0.email %}Email: {{ results.0.email }}{% endif %}</p>
 			<p>{% if results.0.address %}Address: {{ results.0.address }}{% if results.0.city %}, {{ results.0.city }}{% if results.0.province %}, {{ results.0.province }}{% endif %}{% endif %}{% endif %}</p>
-			<p>{% if results.0.topic %}Modules participated: {% for r in results %}<a href="../../module/{{ r.mod_id }}">{{ r.topic }} v{{ r.version }}</a> {% endfor %}{% endif %}</p></br>
 			<p>{% if modules %}Modules participated: {% for m in modules %}<a href="../../module/{{ m.pk }}">{{ m.topic }} v{{ m.version }}</a> {% endfor %}{% endif %}</p></br>
 			<div id="g_{{ results.0.id }}"><p><b>Members</b></p><center><table id="t_{{ results.0.id }}"></table></center</div>
 		{% endif %}
