@@ -512,7 +512,7 @@ def institution(request, instn_id):
 	if request.user.username == 'dost':
 		return render(request, 'plotter/institution.html', {'results' : results, 'restricted' : True})
 	else:
-		return render(request, 'plotter/institution.html', {'results' : results})
+		return render(request, 'plotter/institution.html', {'results' : results, 'modules' : Module.objects.filter(pk__in=Training.objects.filter(trainee__in=Participant.objects.filter(instn=Institution.objects.get(pk=instn_id))).values('module_id').distinct()).order_by('topic')})
 
 @login_required
 def instn_related(request, instn_id):
