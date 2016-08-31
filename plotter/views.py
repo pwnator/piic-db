@@ -394,14 +394,18 @@ def participant(request, ppant_id):
 	if request.user.username == 'dost':
 		return render(request, 'plotter/participant.html', {'results' : results, 'restricted' : True})
 	else:
-		return render(request, 'plotter/participant.html', {'results' : results})
+		return render(request, 'plotter/participant.html', {'results' : results, 'graddates' : Participant.objects.order_by('graddate').values('graddate').distinct()})
 
 @login_required
-def update(request, ppant_id, contactn, email, availability, employment, workdetails, remarks):
+def update(request, ppant_id, contactn, email, graddate, availability, employment, workdetails, remarks):
 	if request.user.username == 'dost':
 		return HttpResponse("This account has insufficient privileges.")
 	else:
 		x = Participant.objects.get(pk=ppant_id)
+		if graddate == 0:
+			x.graddate = None
+		else:
+			x.graddate = graddate
 		if availability == 'true':
 			x.availability = True
 		else:

@@ -33,17 +33,22 @@
 			});
 		}
 		function update() {
-			var j = document.getElementById("contactn").value;
-			var k = document.getElementById("email").value;
-			var w = $('#availability').prop('checked');
-			var x = $('#employment').prop('checked');
-			var y = document.getElementById("workdetails").value;
-			var z = document.getElementById("remarks").value;
-			if (y=='') y = "None";
-			if (z=='') z = "None";
+			var contactn = document.getElementById("contactn").value;
+			var email = document.getElementById("email").value;
+			var graddate = 0;
+			{% if results.0.graddate %}
+				var graddates = document.getElementById("select_graddate");
+				graddate = graddates.options[graddates.selectedIndex].value;
+			{% endif %}
+			var availability = $('#availability').prop('checked');
+			var employment = $('#employment').prop('checked');
+			var workdetails = document.getElementById("workdetails").value;
+			var remarks = document.getElementById("remarks").value;
+			if (workdetails=='') workdetails = "None";
+			if (remarks=='') remarks = "None";
 			$.ajax({
-				url: 'update/'+j+'/'+k+'/'+w+'/'+x+'/'+encodeURIComponent(y)+'/'+encodeURIComponent(z)+'/',
-				data: w,
+				url: 'update/'+contactn+'/'+email+'/'+graddate+'/'+availability+'/'+employment+'/'+encodeURIComponent(workdetails)+'/'+encodeURIComponent(remarks)+'/',
+				data: contactn,
 				success: function(data){
 					window.location.reload();
 				}
@@ -59,8 +64,14 @@
 		<p style="float:left">{% if results.0.email %}Email: {% if restricted %}**confidential**</p>{% else %}</p><textarea style="float:left;margin-left:7px" id="email" rows="1" cols="40">{{ results.0.email }}</textarea></br></br></br>{% endif %}{% endif %}
 		<p style="float:left">{% if results.0.contactn %}Contact number: {% if restricted %}**confidential**</p>{% else %}</p><textarea style="float:left;margin-left:7px" id="contactn" rows="1" cols="10">{{ results.0.contactn }}</textarea></br></br></br>{% endif %}{% endif %}
 		<p>Instructor: <b>{{ results.0.instructor|yesno:"Yes,No" }}</b></p>
-		<p>{% if results.0.designation %}Designation: {{ results.0.designation }}{% endif %}</p>
-		<p>{% if results.0.graddate %}Graduation date: {% widthratio results.0.graddate 10 1 as gyear %}{% widthratio gyear 1 -10 as gfactor %}{{ results.0.graddate|add:gfactor }}H {{ gyear }}{% endif %}</p>
+		{% if results.0.designation %}<p>Designation: {{ results.0.designation }}</p>{% endif %}
+		{% if results.0.graddate %}<div style="float:left; margin-top:2px; margin-right:5px;">Graduation date: </div><select id="select_graddate" style="width:160px;">
+			{% for g in graddates %}
+			{% if g.graddate %}
+			<option value="{{ g.graddate }}" {% ifequal g.graddate results.0.graddate %}selected{% endifequal %}>{% widthratio g.graddate 10 1 as gyear %}{% widthratio gyear 1 -10 as gfactor %}{{ g.graddate|add:gfactor }}H {{ gyear }}</option>
+			{% endif %}
+			{% endfor %}
+		</select>{% endif %}
 		<p>{% if results.0.address %}Address: {% if restricted %}**confidential**{% else %}{{ results.0.address }}{% if results.0.city %}, {{ results.0.city }}{% if results.0.province %}, {{ results.0.province }}{% endif %}{% endif %}{% endif %}{% endif %}</p>
 		<div style="float:left; margin-top:2px;">Available for company interviews:</div>
 		<div class="onoffswitch">
