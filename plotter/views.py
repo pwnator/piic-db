@@ -501,7 +501,7 @@ def module_related(request, mod_id):
 @login_required
 def institution(request, instn_id):
 	cursor = connection.cursor()
-	cursor.execute('SELECT plotter_institution.*,plotter_module.ID AS mod_id,plotter_module.topic,plotter_module.version FROM plotter_institution,plotter_institution_module,plotter_module WHERE plotter_institution_module.institution_id=plotter_institution.ID AND plotter_institution_module.module_id=plotter_module.ID AND plotter_institution.ID=%s ORDER BY plotter_module.topic,plotter_module.version', [instn_id])
+	cursor.execute('SELECT plotter_institution.* FROM plotter_institution WHERE plotter_institution.ID=%s', [instn_id])
 	results = []
 	col_names = [name[0] for name in cursor.description]
 	for row in cursor.fetchall():
