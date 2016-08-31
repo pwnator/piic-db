@@ -5,6 +5,7 @@ from django.db import models
 
 class ModuleInline(admin.TabularInline):
 	model = Institution.module.through
+	ordering = ('module__topic','module__version')
 	exclude = ('fullname','moddate','description','topics','remarks')
 
 class ParticipantInline(admin.TabularInline):
