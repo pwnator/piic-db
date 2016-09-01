@@ -46,7 +46,7 @@ def index(request):
 		'students' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(designation__contains='BS'),
 		'masters' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(designation__startswith='MS'),
 		'faculty' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(Q(designation__contains='Faculty')|Q(designation__contains='Lecturer')),
-		'engineers' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(designation__contains='Engineer'),
+		'engineers' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct().filter(Q(designation__contains='Engineer')|Q(designation__contains='Consultant')),
 		'total' : Participant.objects.filter(trainees__in=Training.objects.all()).distinct(),
 		'employed' : Participant.objects.exclude(company__isnull=True).exclude(company__exact=''),
 		'instns': Institution.objects.order_by('abbrev'),
