@@ -424,5 +424,6 @@
 {% block body_script %}
 	<script>
 		$('#stats').addClass('active');
+		popdate("monthselect","yearselect");
 	</script>
 {% endblock %}
